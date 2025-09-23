@@ -2,7 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="wid        .feedback {
+            background: #f8f9fa;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .score-section {
+            background: #e6f3ff;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .correct-section {
+            background: #d1fae5;
+            border-left: 4px solid #16a34a;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .incorrect-section {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .missed-section {
+            background: #fef3c7;
+            border-left: 4px solid #d97706;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .overall-feedback {
+            background: #f0f9ff;
+            border: 1px solid #0369a1;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }idth, initial-scale=1.0">
     <title>Task 1: Identify User Needs - Recipe Chatbot</title>
     <style>
         body {
@@ -142,12 +187,12 @@
 
     <div class="header">
         <h1>Task 1: Identify User Needs</h1>
-        <p>Select the 3 most relevant user needs for a supermarket recipe chatbot from the 9 options below.</p>
+        <p>Select the 3 most relevant user needs for a farm business recipe chatbot from the 9 options below.</p>
     </div>
 
     <div class="task-info">
         <h3>Scenario Context</h3>
-        <p><strong>Supermarket:</strong> FreshMart - a family-friendly grocery chain with focus on fresh ingredients and healthy eating</p>
+        <p><strong>Farm Business:</strong> Munson's Pickles and Preserves Farm - a family farm specializing in artisanal pickles, preserves, and farm-fresh produce</p>
         <p><strong>Customer Base:</strong> Busy families, health-conscious shoppers, and cooking enthusiasts</p>
         <p><strong>Chatbot Goal:</strong> Help customers discover recipes, plan meals, and make informed food choices</p>
     </div>
@@ -223,7 +268,7 @@
             <li><strong>Cooking Tips</strong> ensure customers can successfully execute the recipes they find</li>
         </ul>
         
-        <p><strong>Other needs:</strong> While important for a full supermarket app, they're less critical for a recipe-focused chatbot experience.</p>
+        <p><strong>Other needs:</strong> While important for a full farm business app, they're less critical for a recipe-focused chatbot experience.</p>
         
         <a href="../task-2-intent-matching/index.html" class="next-task">Continue to Task 2: Match Intents to Responses</a>
     </div>
@@ -262,8 +307,95 @@
                 return;
             }
             
+            generatePersonalizedFeedback();
             document.getElementById('feedback').classList.add('show');
             document.querySelector('.selection-summary').style.display = 'none';
+        }
+
+        function generatePersonalizedFeedback() {
+            const correctAnswers = new Set(['recipe-search', 'meal-planning', 'cooking-tips']);
+            const selectedArray = Array.from(selectedNeeds);
+            const correctSelections = selectedArray.filter(need => correctAnswers.has(need));
+            const incorrectSelections = selectedArray.filter(need => !correctAnswers.has(need));
+            const missedCorrect = Array.from(correctAnswers).filter(need => !selectedNeeds.has(need));
+            
+            const needTitles = {
+                'recipe-search': 'Recipe Search & Discovery',
+                'meal-planning': 'Meal Planning',
+                'cooking-tips': 'Cooking Tips & Techniques',
+                'price-comparison': 'Price Comparison',
+                'nutritional-info': 'Nutritional Information',
+                'store-navigation': 'Store Navigation',
+                'inventory-management': 'Inventory Management',
+                'delivery-tracking': 'Delivery Tracking',
+                'seasonal-suggestions': 'Seasonal Suggestions'
+            };
+
+            let feedbackHTML = '<h3>Your Selection Feedback</h3>';
+            
+            // Score calculation
+            const score = correctSelections.length;
+            feedbackHTML += `<div class="score-section"><h4>Score: ${score}/3 correct</h4></div>`;
+            
+            // Correct selections feedback
+            if (correctSelections.length > 0) {
+                feedbackHTML += '<div class="correct-section"><h4>✅ Correct Selections:</h4><ul>';
+                correctSelections.forEach(need => {
+                    const explanations = {
+                        'recipe-search': 'Core functionality - customers expect to find recipes easily',
+                        'meal-planning': 'Helps busy families organize meals and shopping efficiently',
+                        'cooking-tips': 'Essential support for successful recipe execution'
+                    };
+                    feedbackHTML += `<li><strong>${needTitles[need]}</strong> - ${explanations[need]}</li>`;
+                });
+                feedbackHTML += '</ul></div>';
+            }
+            
+            // Incorrect selections feedback
+            if (incorrectSelections.length > 0) {
+                feedbackHTML += '<div class="incorrect-section"><h4>❌ Incorrect Selections:</h4><ul>';
+                incorrectSelections.forEach(need => {
+                    const explanations = {
+                        'price-comparison': 'Not core to recipe functionality - belongs in e-commerce features',
+                        'nutritional-info': 'While useful, not essential for basic recipe assistance',
+                        'store-navigation': 'Physical store feature - less relevant for recipe chatbot',
+                        'inventory-management': 'Advanced feature - not essential for initial recipe chatbot',
+                        'delivery-tracking': 'Logistics feature - separate from recipe assistance',
+                        'seasonal-suggestions': 'Nice-to-have but not core to recipe search and planning'
+                    };
+                    feedbackHTML += `<li><strong>${needTitles[need]}</strong> - ${explanations[need]}</li>`;
+                });
+                feedbackHTML += '</ul></div>';
+            }
+            
+            // Missed correct answers
+            if (missedCorrect.length > 0) {
+                feedbackHTML += '<div class="missed-section"><h4>⚠️ You Missed:</h4><ul>';
+                missedCorrect.forEach(need => {
+                    const explanations = {
+                        'recipe-search': 'Essential core functionality for any recipe chatbot',
+                        'meal-planning': 'Critical for helping families organize their weekly cooking',
+                        'cooking-tips': 'Vital for helping users succeed with recipes they find'
+                    };
+                    feedbackHTML += `<li><strong>${needTitles[need]}</strong> - ${explanations[need]}</li>`;
+                });
+                feedbackHTML += '</ul></div>';
+            }
+            
+            // Overall feedback
+            if (score === 3) {
+                feedbackHTML += '<div class="overall-feedback"><p><strong>Excellent!</strong> You identified all the core needs for a recipe chatbot. These three needs form the foundation of effective recipe assistance.</p></div>';
+            } else if (score === 2) {
+                feedbackHTML += '<div class="overall-feedback"><p><strong>Good work!</strong> You got most of the core needs. Focus on features that directly support recipe discovery, planning, and execution.</p></div>';
+            } else if (score === 1) {
+                feedbackHTML += '<div class="overall-feedback"><p><strong>Keep learning!</strong> Think about what customers primarily need when looking for recipe help: finding recipes, planning meals, and cooking successfully.</p></div>';
+            } else {
+                feedbackHTML += '<div class="overall-feedback"><p><strong>Review needed.</strong> For a recipe chatbot, focus on the core recipe lifecycle: discovery, planning, and execution support.</p></div>';
+            }
+            
+            feedbackHTML += '<a href="../task-2-intent-matching/index.html" class="next-task">Continue to Task 2: Evaluate Response Quality</a>';
+            
+            document.getElementById('feedback').innerHTML = feedbackHTML;
         }
     </script>
 </body>

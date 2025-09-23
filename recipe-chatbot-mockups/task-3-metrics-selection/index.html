@@ -178,6 +178,81 @@
             margin-top: 20px;
             font-weight: 500;
         }
+        .feedback {
+            background: #d1edff;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .feedback-section {
+            margin: 20px 0;
+        }
+        .feedback-item {
+            background: white;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .score-section {
+            background: #e6f3ff;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .correct-badge {
+            background: #16a34a;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .incorrect-badge {
+            background: #f59e0b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .missed-badge {
+            background: #dc2626;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .overall-feedback {
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .overall-feedback.success {
+            background: #d1fae5;
+            border: 1px solid #16a34a;
+        }
+        .overall-feedback.good {
+            background: #fef3c7;
+            border: 1px solid #d97706;
+        }
+        .overall-feedback.needs-work {
+            background: #fee2e2;
+            border: 1px solid #dc2626;
+        }
     </style>
 </head>
 <body>
@@ -196,78 +271,114 @@
         <h3>Recipe Chatbot Evaluation Context</h3>
         <p><strong>Business Goals:</strong></p>
         <ul>
-            <li>Provide accurate recipe information and cooking guidance</li>
-            <li>Help customers discover relevant recipes based on their needs</li>
-            <li>Maintain helpful, friendly conversation that encourages cooking</li>
+            <li>Provide accurate recipe information and cooking guidance using farm products</li>
+            <li>Help customers discover relevant recipes based on their needs and available ingredients</li>
+            <li>Maintain helpful, friendly conversation that encourages cooking with farm products</li>
             <li>Ensure responses are safe and appropriate for all family members</li>
         </ul>
         <p><strong>Success Criteria:</strong> High customer satisfaction, accurate information, relevant suggestions, and appropriate content</p>
+        <p><strong>Available Metrics:</strong> Select from Azure AI Foundry's built-in evaluation metrics across AI Quality, Risk & Safety categories</p>
     </div>
 
     <div class="metrics-grid">
+        <!-- AI Quality (AI Assisted) Metrics -->
         <div class="metric-card" data-metric="groundedness" onclick="toggleMetric('groundedness')">
             <div class="metric-header">
                 <div class="metric-title">Groundedness</div>
-                <div class="metric-category">Accuracy Metric</div>
+                <div class="metric-category">AI Quality (AI Assisted)</div>
             </div>
             <div class="metric-content">
-                <div class="metric-description">Measures how well responses are supported by reliable sources and factual information</div>
-                <div class="metric-use-case">Best for: Recipe accuracy, cooking facts, nutritional information</div>
+                <div class="metric-description">Evaluates how well responses are supported by the provided context or source material</div>
+                <div class="metric-use-case">Best for: Recipe accuracy, cooking facts, ingredient information</div>
             </div>
         </div>
 
         <div class="metric-card" data-metric="relevance" onclick="toggleMetric('relevance')">
             <div class="metric-header">
                 <div class="metric-title">Relevance</div>
-                <div class="metric-category">Quality Metric</div>
+                <div class="metric-category">AI Quality (AI Assisted)</div>
             </div>
             <div class="metric-content">
-                <div class="metric-description">Evaluates how well responses address the user's specific query and context</div>
-                <div class="metric-use-case">Best for: Recipe recommendations, personalized suggestions</div>
+                <div class="metric-description">Measures how well responses address the user's specific query and intent</div>
+                <div class="metric-use-case">Best for: Recipe recommendations, personalized cooking suggestions</div>
             </div>
         </div>
 
         <div class="metric-card" data-metric="coherence" onclick="toggleMetric('coherence')">
             <div class="metric-header">
                 <div class="metric-title">Coherence</div>
-                <div class="metric-category">Quality Metric</div>
+                <div class="metric-category">AI Quality (AI Assisted)</div>
             </div>
             <div class="metric-content">
                 <div class="metric-description">Assesses how logical, clear, and well-structured the responses are</div>
-                <div class="metric-use-case">Best for: Recipe instructions, step-by-step guidance</div>
-            </div>
-        </div>
-
-        <div class="metric-card" data-metric="content-safety" onclick="toggleMetric('content-safety')">
-            <div class="metric-header">
-                <div class="metric-title">Content Safety</div>
-                <div class="metric-category">Safety Metric</div>
-            </div>
-            <div class="metric-content">
-                <div class="metric-description">Detects harmful, inappropriate, or unsafe content in AI responses</div>
-                <div class="metric-use-case">Best for: Family-safe interactions, appropriate content</div>
-            </div>
-        </div>
-
-        <div class="metric-card" data-metric="similarity" onclick="toggleMetric('similarity')">
-            <div class="metric-header">
-                <div class="metric-title">Similarity</div>
-                <div class="metric-category">Comparison Metric</div>
-            </div>
-            <div class="metric-content">
-                <div class="metric-description">Compares AI responses against reference answers or expected outputs</div>
-                <div class="metric-use-case">Best for: Standardized responses, template validation</div>
+                <div class="metric-use-case">Best for: Recipe instructions, step-by-step cooking guidance</div>
             </div>
         </div>
 
         <div class="metric-card" data-metric="fluency" onclick="toggleMetric('fluency')">
             <div class="metric-header">
                 <div class="metric-title">Fluency</div>
-                <div class="metric-category">Language Metric</div>
+                <div class="metric-category">AI Quality (AI Assisted)</div>
             </div>
             <div class="metric-content">
-                <div class="metric-description">Measures grammatical correctness and natural language quality</div>
-                <div class="metric-use-case">Best for: Conversational quality, readability</div>
+                <div class="metric-description">Measures grammatical correctness and natural language quality of responses</div>
+                <div class="metric-use-case">Best for: Conversational quality, readability of instructions</div>
+            </div>
+        </div>
+
+        <div class="metric-card" data-metric="gpt-similarity" onclick="toggleMetric('gpt-similarity')">
+            <div class="metric-header">
+                <div class="metric-title">GPT Similarity</div>
+                <div class="metric-category">AI Quality (AI Assisted)</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Compares AI responses against ground truth or reference answers using semantic similarity</div>
+                <div class="metric-use-case">Best for: Standardized recipe responses, consistent information</div>
+            </div>
+        </div>
+
+        <!-- Risk and Safety Metrics -->
+        <div class="metric-card" data-metric="self-harm" onclick="toggleMetric('self-harm')">
+            <div class="metric-header">
+                <div class="metric-title">Self-harm Related Content</div>
+                <div class="metric-category">Risk and Safety</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Detects content that could promote or encourage self-harmful behaviors</div>
+                <div class="metric-use-case">Best for: Ensuring safe cooking advice, appropriate dietary guidance</div>
+            </div>
+        </div>
+
+        <div class="metric-card" data-metric="hateful-content" onclick="toggleMetric('hateful-content')">
+            <div class="metric-header">
+                <div class="metric-title">Hateful and Unfair Content</div>
+                <div class="metric-category">Risk and Safety</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Identifies discriminatory, biased, or hateful content in responses</div>
+                <div class="metric-use-case">Best for: Inclusive, respectful cooking recommendations for all customers</div>
+            </div>
+        </div>
+
+        <div class="metric-card" data-metric="violent-content" onclick="toggleMetric('violent-content')">
+            <div class="metric-header">
+                <div class="metric-title">Violent Content</div>
+                <div class="metric-category">Risk and Safety</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Detects content that describes or promotes violence</div>
+                <div class="metric-use-case">Best for: Family-safe cooking environment, appropriate content</div>
+            </div>
+        </div>
+
+        <div class="metric-card" data-metric="sexual-content" onclick="toggleMetric('sexual-content')">
+            <div class="metric-header">
+                <div class="metric-title">Sexual Content</div>
+                <div class="metric-category">Risk and Safety</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Identifies inappropriate sexual content in AI responses</div>
+                <div class="metric-use-case">Best for: Family-appropriate cooking conversations</div>
             </div>
         </div>
     </div>
@@ -285,9 +396,9 @@
         <h3>Feedback</h3>
         <p><strong>Recommended Metrics for Recipe Chatbot:</strong></p>
         <ol>
-            <li><strong>Groundedness</strong> - Critical for ensuring recipe accuracy and safe cooking information</li>
-            <li><strong>Relevance</strong> - Essential for providing personalized recipe recommendations</li>
-            <li><strong>Content Safety</strong> - Important for family-friendly interactions and appropriate content</li>
+            <li><strong>Groundedness</strong> - Critical for ensuring recipe accuracy and safe cooking information based on reliable sources</li>
+            <li><strong>Relevance</strong> - Essential for providing personalized recipe recommendations that match customer needs</li>
+            <li><strong>Self-harm Related Content</strong> - Important for ensuring safe cooking advice and dietary guidance</li>
         </ol>
 
         <div class="dashboard-preview">
@@ -297,29 +408,29 @@
                 <div class="score-bar">
                     <div class="score-fill" style="width: 85%;"></div>
                 </div>
-                <span>85%</span>
+                <span>4.25/5</span>
             </div>
             <div class="metric-score">
                 <span><strong>Relevance Score</strong></span>
                 <div class="score-bar">
                     <div class="score-fill" style="width: 78%;"></div>
                 </div>
-                <span>78%</span>
+                <span>3.9/5</span>
             </div>
             <div class="metric-score">
-                <span><strong>Content Safety Score</strong></span>
+                <span><strong>Self-harm Content Score</strong></span>
                 <div class="score-bar">
                     <div class="score-fill" style="width: 95%;"></div>
                 </div>
-                <span>95%</span>
+                <span>Very Low Risk</span>
             </div>
         </div>
 
-        <p><strong>Why these metrics matter:</strong></p>
+        <p><strong>Why these Azure AI Foundry metrics matter:</strong></p>
         <ul>
-            <li><strong>Groundedness</strong> ensures customers receive accurate cooking information and safe food handling advice</li>
-            <li><strong>Relevance</strong> measures how well the chatbot matches recipes to customer preferences and constraints</li>
-            <li><strong>Content Safety</strong> maintains family-appropriate interactions in a grocery/cooking context</li>
+            <li><strong>Groundedness</strong> ensures customers receive accurate cooking information and safe food handling advice based on reliable sources</li>
+            <li><strong>Relevance</strong> measures how well the chatbot matches recipes to customer preferences and available farm products</li>
+            <li><strong>Self-harm Related Content</strong> maintains safe dietary and cooking advice, especially important for health-related food guidance</li>
         </ul>
         
         <a href="../task-4-test-creation/index.html" class="next-task">Continue to Task 4: Create Smoke Test Set</a>
@@ -360,9 +471,12 @@
                 'groundedness': 'Groundedness',
                 'relevance': 'Relevance',
                 'coherence': 'Coherence',
-                'content-safety': 'Content Safety',
-                'similarity': 'Similarity',
-                'fluency': 'Fluency'
+                'fluency': 'Fluency',
+                'gpt-similarity': 'GPT Similarity',
+                'self-harm': 'Self-harm Related Content',
+                'hateful-content': 'Hateful and Unfair Content',
+                'violent-content': 'Violent Content',
+                'sexual-content': 'Sexual Content'
             };
 
             container.innerHTML = Array.from(selectedMetrics)
@@ -378,8 +492,130 @@
                 return;
             }
             
+            generatePersonalizedFeedback();
             document.getElementById('feedback').classList.add('show');
             document.querySelector('.selection-summary').style.display = 'none';
+        }
+
+        function generatePersonalizedFeedback() {
+            const correctAnswers = ['groundedness', 'relevance', 'self-harm'];
+            const selectedArray = Array.from(selectedMetrics);
+            const correct = selectedArray.filter(metric => correctAnswers.includes(metric));
+            const incorrect = selectedArray.filter(metric => !correctAnswers.includes(metric));
+            const missed = correctAnswers.filter(metric => !selectedMetrics.has(metric));
+
+            const metricNames = {
+                'groundedness': 'Groundedness',
+                'relevance': 'Relevance',
+                'coherence': 'Coherence',
+                'fluency': 'Fluency',
+                'gpt-similarity': 'GPT Similarity',
+                'self-harm': 'Self-harm Related Content',
+                'hateful-content': 'Hateful and Unfair Content',
+                'violent-content': 'Violent Content',
+                'sexual-content': 'Sexual Content'
+            };
+
+            const metricExplanations = {
+                'groundedness': 'Critical for ensuring recipe accuracy and safe cooking information based on reliable sources',
+                'relevance': 'Essential for providing personalized recipe recommendations that match customer needs and available farm products',
+                'self-harm': 'Important for ensuring safe cooking advice and dietary guidance, especially for health-related food questions',
+                'coherence': 'While useful for readability, it\'s less critical than safety and accuracy for a recipe chatbot',
+                'fluency': 'Important for user experience but secondary to safety and accuracy concerns',
+                'gpt-similarity': 'Useful for consistency but may not capture the nuanced quality needed for recipes',
+                'hateful-content': 'Important for inclusive service but less likely to be triggered in recipe conversations',
+                'violent-content': 'Less relevant for cooking-focused conversations',
+                'sexual-content': 'Less relevant for cooking-focused conversations'
+            };
+
+            let feedbackHTML = '<h3>Your Evaluation Results</h3>';
+            
+            // Score section
+            const score = correct.length;
+            feedbackHTML += `<div class="score-section">Score: ${score}/3 correct selections</div>`;
+
+            // Correct selections
+            if (correct.length > 0) {
+                feedbackHTML += '<div class="feedback-section correct-section">';
+                feedbackHTML += '<h4>✅ Excellent Choices</h4>';
+                correct.forEach(metric => {
+                    feedbackHTML += `<div class="feedback-item">
+                        <span class="correct-badge">CORRECT</span>
+                        <strong>${metricNames[metric]}</strong>: ${metricExplanations[metric]}
+                    </div>`;
+                });
+                feedbackHTML += '</div>';
+            }
+
+            // Incorrect selections
+            if (incorrect.length > 0) {
+                feedbackHTML += '<div class="feedback-section incorrect-section">';
+                feedbackHTML += '<h4>⚠️ Consider Reconsidering</h4>';
+                incorrect.forEach(metric => {
+                    feedbackHTML += `<div class="feedback-item">
+                        <span class="incorrect-badge">RECONSIDER</span>
+                        <strong>${metricNames[metric]}</strong>: ${metricExplanations[metric]}
+                    </div>`;
+                });
+                feedbackHTML += '</div>';
+            }
+
+            // Missed important metrics
+            if (missed.length > 0) {
+                feedbackHTML += '<div class="feedback-section missed-section">';
+                feedbackHTML += '<h4>📝 Key Metrics You Missed</h4>';
+                missed.forEach(metric => {
+                    feedbackHTML += `<div class="feedback-item">
+                        <span class="missed-badge">MISSED</span>
+                        <strong>${metricNames[metric]}</strong>: ${metricExplanations[metric]}
+                    </div>`;
+                });
+                feedbackHTML += '</div>';
+            }
+
+            // Overall feedback
+            let overallFeedback;
+            if (score === 3) {
+                overallFeedback = '<div class="overall-feedback success">🎉 Perfect! You\'ve identified the three most critical metrics for evaluating a recipe chatbot. Your selections prioritize accuracy, relevance, and safety - exactly what Munson\'s customers need.</div>';
+            } else if (score === 2) {
+                overallFeedback = '<div class="overall-feedback good">👍 Great job! You\'ve captured most of the essential metrics. Consider how the missed metric could enhance your evaluation strategy.</div>';
+            } else {
+                overallFeedback = '<div class="overall-feedback needs-work">💡 Good start! Focus on metrics that ensure recipe accuracy, customer relevance, and safety. These are the foundation of a trustworthy food-related AI system.</div>';
+            }
+
+            feedbackHTML += overallFeedback;
+            
+            // Add sample dashboard
+            feedbackHTML += `
+                <div class="dashboard-preview">
+                    <h4>Sample Evaluation Dashboard</h4>
+                    <div class="metric-score">
+                        <span><strong>Groundedness Score</strong></span>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: 85%;"></div>
+                        </div>
+                        <span>4.25/5</span>
+                    </div>
+                    <div class="metric-score">
+                        <span><strong>Relevance Score</strong></span>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: 78%;"></div>
+                        </div>
+                        <span>3.9/5</span>
+                    </div>
+                    <div class="metric-score">
+                        <span><strong>Self-harm Content Score</strong></span>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: 95%;"></div>
+                        </div>
+                        <span>Very Low Risk</span>
+                    </div>
+                </div>
+            `;
+            
+            feedbackHTML += '<a href="../task-4-test-creation/index.html" class="next-task">Continue to Task 4: Create Smoke Test Set</a>';
+            
+            document.getElementById('feedback').innerHTML = feedbackHTML;
         }
     </script>
 </body>

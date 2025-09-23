@@ -7,11 +7,12 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             line-height: 1.6;
             color: #333;
+            background-color: #f8f9fa;
         }
         .navigation {
             background: #f6f8fa;
@@ -31,74 +32,188 @@
             text-decoration: underline;
         }
         .header {
-            border-bottom: 1px solid #e0e0e0;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        .instructions {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            border-radius: 6px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .intent-section {
-            background: #fff;
-            border: 1px solid #d0d7de;
-            border-radius: 6px;
-            margin: 25px 0;
-            overflow: hidden;
-        }
-        .intent-header {
-            background: #f6f8fa;
-            padding: 15px 20px;
-            border-bottom: 1px solid #d0d7de;
-            font-weight: 600;
-            font-size: 16px;
-        }
-        .intent-content {
-            padding: 20px;
-        }
-        .prompt-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d0d7de;
-            border-radius: 6px;
-            margin: 10px 0;
-            font-size: 14px;
-            line-height: 1.4;
-            resize: vertical;
-            min-height: 60px;
-        }
-        .prompt-input:focus {
-            outline: none;
-            border-color: #0969da;
-            box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
-        }
-        .example-prompts {
-            background: #f8f9fa;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            padding: 15px;
-            margin: 15px 0;
-            font-size: 13px;
-        }
-        .example-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #374151;
-        }
-        .example-list {
-            color: #6b7280;
-            margin: 5px 0;
-        }
-        .progress-section {
-            background: #fff;
+        .instructions-banner {
+            background: #e7f3ff;
             border: 1px solid #0969da;
             border-radius: 6px;
             padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .selection-info {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .conversation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .conversation-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 0;
+            transition: all 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .conversation-card:hover {
+            border-color: #0969da;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .conversation-card.selected {
+            border-color: #0969da;
+            background: #f0f9ff;
+        }
+        .conversation-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #0969da;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .conversation-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .conversation-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+        .conversation-category {
+            font-size: 12px;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        .conversation-content {
+            padding: 20px;
+        }
+        .customer-message {
+            background: #e7f3ff;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .customer-message::before {
+            content: 'C';
+            position: absolute;
+            left: -8px;
+            top: -8px;
+            background: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #0969da;
+        }
+        .assistant-message {
+            background: #f0fdf4;
+            border-radius: 12px;
+            padding: 12px 16px;
+            position: relative;
+        }
+        .assistant-message::before {
+            content: 'A';
+            position: absolute;
+            left: -8px;
+            top: -8px;
+            background: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #16a34a;
+        }
+        .quality-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .quality-tag {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        /* Query Complexity - Blue tones */
+        .quality-tag.complexity {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        /* Information Type - Green tones */
+        .quality-tag.information {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        /* Use Cases - Purple tones */
+        .quality-tag.usecase {
+            background: #e9d5ff;
+            color: #6b21a8;
+        }
+        /* Context/Urgency - Orange tones */
+        .quality-tag.context {
+            background: #fed7aa;
+            color: #c2410c;
+        }
+        /* Legacy classes for backward compatibility */
+        .quality-tag.high {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .quality-tag.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .quality-tag.low {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .progress-section {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
             margin: 30px 0;
             text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .progress-counter {
             font-size: 18px;
@@ -121,33 +236,119 @@
             cursor: not-allowed;
         }
         .feedback {
-            background: #d1edff;
-            border: 1px solid #0969da;
-            border-radius: 6px;
-            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
             margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             display: none;
         }
         .feedback.show {
             display: block;
         }
-        .test-summary {
-            background: white;
-            border: 1px solid #d0d7de;
+        .coverage-check {
+            background: #dcfce7;
+            border: 1px solid #16a34a;
             border-radius: 6px;
             padding: 15px;
             margin: 15px 0;
         }
-        .test-item {
-            margin: 8px 0;
-            padding: 8px;
-            background: #f8f9fa;
-            border-radius: 4px;
-            font-size: 14px;
+        .feedback-section {
+            margin: 20px 0;
         }
-        .coverage-check {
+        .feedback-item {
+            background: #f8f9fa;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .score-section {
+            background: #e6f3ff;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .category-badge {
+            background: #6b7280;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .complexity-badge {
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        .complexity-badge.simple {
             background: #dcfce7;
+            color: #166534;
+        }
+        .complexity-badge.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .complexity-badge.complex {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .coverage-item {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border-left: 4px solid #d0d7de;
+        }
+        .coverage-item.good {
+            background: #f0fdf4;
+            border-left-color: #16a34a;
+        }
+        .coverage-item.needs-improvement {
+            background: #fffbeb;
+            border-left-color: #f59e0b;
+        }
+        .coverage-badge {
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+        .coverage-badge.good {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .coverage-badge.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .overall-feedback {
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .overall-feedback.success {
+            background: #d1fae5;
             border: 1px solid #16a34a;
+        }
+        .overall-feedback.good {
+            background: #fef3c7;
+            border: 1px solid #d97706;
+        }
+        .overall-feedback.needs-work {
+            background: #fee2e2;
+            border: 1px solid #dc2626;
+        }
+        .testing-principles {
+            background: #f0f9ff;
+            border: 1px solid #0969da;
             border-radius: 6px;
             padding: 15px;
             margin: 15px 0;
@@ -162,6 +363,13 @@
             margin-top: 20px;
             font-weight: 500;
         }
+        .data-source-info {
+            background: #fffbeb;
+            border: 1px solid #f59e0b;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -173,172 +381,402 @@
 
     <div class="header">
         <h1>Task 4: Create a Smoke Test Set</h1>
-        <p>Create 9 diverse test prompts (3 per user intent) to serve as a smoke test for the recipe chatbot.</p>
+        <p>Select 3 diverse customer conversations from Munson's historical data to create a focused smoke test set.</p>
     </div>
 
-    <div class="instructions">
-        <h3>Smoke Test Guidelines</h3>
-        <p><strong>Goal:</strong> Create a quick test set that covers the main user intents and helps identify obvious issues with the chatbot.</p>
-        <p><strong>Requirements:</strong> 3 prompts per intent (9 total), covering different scenarios and complexity levels for each intent.</p>
-    </div>
-
-    <!-- Recipe Search Intent -->
-    <div class="intent-section">
-        <div class="intent-header">Intent 1: Recipe Search & Discovery (3 prompts)</div>
-        <div class="intent-content">
-            <div class="example-prompts">
-                <div class="example-title">Example variations to test:</div>
-                <div class="example-list">• Ingredient-based search • Dietary restrictions • Quick/time-limited recipes • Cuisine preferences</div>
-            </div>
-            
-            <label for="recipe1"><strong>Prompt 1:</strong></label>
-            <textarea class="prompt-input" id="recipe1" placeholder="Enter a test prompt for recipe search (e.g., ingredient-based query)"></textarea>
-            
-            <label for="recipe2"><strong>Prompt 2:</strong></label>
-            <textarea class="prompt-input" id="recipe2" placeholder="Enter a different recipe search scenario"></textarea>
-            
-            <label for="recipe3"><strong>Prompt 3:</strong></label>
-            <textarea class="prompt-input" id="recipe3" placeholder="Enter a third recipe search variation"></textarea>
+    <div class="instructions-banner">
+        <h3>Select conversations that represent different test scenarios for comprehensive coverage</h3>
+        <div style="font-size: 14px; margin-top: 10px;">
+            <strong>0 / 3 selected</strong>
         </div>
     </div>
 
-    <!-- Meal Planning Intent -->
-    <div class="intent-section">
-        <div class="intent-header">Intent 2: Meal Planning (3 prompts)</div>
-        <div class="intent-content">
-            <div class="example-prompts">
-                <div class="example-title">Example variations to test:</div>
-                <div class="example-list">• Weekly planning • Family sizes • Budget constraints • Health goals • Special events</div>
-            </div>
-            
-            <label for="planning1"><strong>Prompt 1:</strong></label>
-            <textarea class="prompt-input" id="planning1" placeholder="Enter a test prompt for meal planning (e.g., weekly family meals)"></textarea>
-            
-            <label for="planning2"><strong>Prompt 2:</strong></label>
-            <textarea class="prompt-input" id="planning2" placeholder="Enter a different meal planning scenario"></textarea>
-            
-            <label for="planning3"><strong>Prompt 3:</strong></label>
-            <textarea class="prompt-input" id="planning3" placeholder="Enter a third meal planning variation"></textarea>
-        </div>
+    <div class="data-source-info">
+        <h3>Historical Conversation Data Source</h3>
+        <p><strong>Data Origin:</strong> Munson's Pickles and Preserves Farm has collected 6 months of customer service chat logs from their website, covering recipe inquiries, product questions, and cooking guidance requests.</p>
+        <p><strong>Your Task:</strong> Select 3 diverse conversations that represent different types of customer requests to create a focused smoke test set for evaluating the new AI chatbot.</p>
+        <p><strong>Selection Criteria:</strong> Choose conversations that cover different customer intents, complexity levels, and edge cases to ensure comprehensive testing coverage.</p>
     </div>
 
-    <!-- Cooking Tips Intent -->
-    <div class="intent-section">
-        <div class="intent-header">Intent 3: Cooking Tips & Techniques (3 prompts)</div>
-        <div class="intent-content">
-            <div class="example-prompts">
-                <div class="example-title">Example variations to test:</div>
-                <div class="example-list">• Troubleshooting problems • Technique questions • Substitutions • Equipment usage</div>
+    <div class="conversation-grid">
+        <!-- Recipe Search Conversations -->
+        <div class="conversation-card" onclick="toggleSelection(this, 'recipe-search-1')">
+            <div class="conversation-header">
+                <h4 class="conversation-title">Pickle Recipe Request</h4>
+                <div class="conversation-category">Recipe Search</div>
             </div>
-            
-            <label for="cooking1"><strong>Prompt 1:</strong></label>
-            <textarea class="prompt-input" id="cooking1" placeholder="Enter a test prompt for cooking tips (e.g., technique question)"></textarea>
-            
-            <label for="cooking2"><strong>Prompt 2:</strong></label>
-            <textarea class="prompt-input" id="cooking2" placeholder="Enter a different cooking tips scenario"></textarea>
-            
-            <label for="cooking3"><strong>Prompt 3:</strong></label>
-            <textarea class="prompt-input" id="cooking3" placeholder="Enter a third cooking tips variation"></textarea>
+            <div class="conversation-content">
+                <div class="customer-message">
+                    Hi! I just bought your dill pickles and they're amazing. Do you have the recipe? I'd love to try making them at home.
+                </div>
+                <div class="assistant-message">
+                    Thank you so much! I'd be happy to share our classic dill pickle recipe. You'll need fresh cucumbers, dill, garlic, and our special brine mixture. Here's the complete recipe with step-by-step instructions...
+                </div>
+                <div class="quality-tags">
+                    <span class="quality-tag complexity">SIMPLE QUERY</span>
+                    <span class="quality-tag information">SPECIFIC REQUEST</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="conversation-card" onclick="toggleSelection(this, 'meal-planning-1')">
+            <div class="conversation-header">
+                <h4 class="conversation-title">Weekly Preserve Menu</h4>
+                <div class="conversation-category">Meal Planning</div>
+            </div>
+            <div class="conversation-content">
+                <div class="customer-message">
+                    I want to incorporate more of your preserves into my family's weekly meals. Can you suggest a 7-day meal plan using different preserves?
+                </div>
+                <div class="assistant-message">
+                    Absolutely! Here's a week-long meal plan featuring our preserves: Monday - Apricot glazed chicken, Tuesday - Strawberry balsamic pork tenderloin, Wednesday - Fig and goat cheese flatbread... Each meal highlights different preserve flavors.
+                </div>
+                <div class="quality-tags">
+                    <span class="quality-tag complexity">COMPLEX PLANNING</span>
+                    <span class="quality-tag complexity">MULTI-STEP REQUEST</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="conversation-card" onclick="toggleSelection(this, 'cooking-tips-1')">
+            <div class="conversation-header">
+                <h4 class="conversation-title">Canning Safety Question</h4>
+                <div class="conversation-category">Cooking Tips</div>
+            </div>
+            <div class="conversation-content">
+                <div class="customer-message">
+                    I'm new to home canning. What's the most important safety tip when making preserves?
+                </div>
+                <div class="assistant-message">
+                    Great question! The most critical safety aspect is proper sterilization and achieving the right acidity level. Always use tested recipes, sterilize your jars, and ensure proper sealing. Here's our complete safety guide...
+                </div>
+                <div class="quality-tags">
+                    <span class="quality-tag information">SAFETY TOPIC</span>
+                    <span class="quality-tag context">BEGINNER QUERY</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="conversation-card" onclick="toggleSelection(this, 'product-info-1')">
+            <div class="conversation-header">
+                <h4 class="conversation-title">Ingredient Inquiry</h4>
+                <div class="conversation-category">Product Information</div>
+            </div>
+            <div class="conversation-content">
+                <div class="customer-message">
+                    Do your strawberry preserves contain any artificial flavors or high fructose corn syrup?
+                </div>
+                <div class="assistant-message">
+                    No artificial flavors or high fructose corn syrup in our strawberry preserves! We use only fresh strawberries, pure cane sugar, lemon juice, and natural pectin. All our ingredients are clearly listed on the label.
+                </div>
+                <div class="quality-tags">
+                    <span class="quality-tag information">INGREDIENT QUERY</span>
+                    <span class="quality-tag information">PRODUCT INFO</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="conversation-card" onclick="toggleSelection(this, 'recipe-search-2')">
+            <div class="conversation-header">
+                <h4 class="conversation-title">Seasonal Recipe Request</h4>
+                <div class="conversation-category">Recipe Search</div>
+            </div>
+            <div class="conversation-content">
+                <div class="customer-message">
+                    It's apple season! What are some creative ways to use your apple butter in fall recipes?
+                </div>
+                <div class="assistant-message">
+                    Perfect timing! Our apple butter is wonderful in fall baking. Try it in apple butter coffee cake, as a glaze for pork chops, mixed into oatmeal, or swirled into cream cheese for a bagel spread. Here are 5 detailed recipes...
+                </div>
+                <div class="quality-tags">
+                    <span class="quality-tag usecase">SEASONAL QUERY</span>
+                    <span class="quality-tag usecase">CREATIVE REQUEST</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="conversation-card" onclick="toggleSelection(this, 'troubleshooting-1')">
+            <div class="conversation-header">
+                <h4 class="conversation-title">Preserve Storage Issue</h4>
+                <div class="conversation-category">Troubleshooting</div>
+            </div>
+            <div class="conversation-content">
+                <div class="customer-message">
+                    Help! I opened my peach preserves last week and there's some crystallization on top. Is it still safe to eat?
+                </div>
+                <div class="assistant-message">
+                    Don't worry! Natural crystallization is normal and safe - it's just sugar crystals forming. Simply stir them back in. Your preserves are perfectly fine to eat. Store opened jars in the refrigerator for best quality.
+                </div>
+                <div class="quality-tags">
+                    <span class="quality-tag context">TROUBLESHOOTING</span>
+                    <span class="quality-tag context">URGENT QUERY</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="conversation-card" onclick="toggleSelection(this, 'meal-planning-2')">
+            <div class="conversation-header">
+                <h4 class="conversation-title">Holiday Menu Planning</h4>
+                <div class="conversation-category">Meal Planning</div>
+            </div>
+            <div class="conversation-content">
+                <div class="customer-message">
+                    I'm hosting Thanksgiving dinner for 12 people. How can I incorporate your preserves into the menu?
+                </div>
+                <div class="assistant-message">
+                    What a wonderful way to celebrate! For 12 guests, consider our cranberry-orange relish as a turkey accompaniment, fig preserves with the cheese course, and apple butter in your dinner rolls. Here's a complete menu plan...
+                </div>
+                <div class="quality-tags">
+                    <span class="quality-tag usecase">EVENT PLANNING</span>
+                    <span class="quality-tag context">LARGE SCALE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="conversation-card" onclick="toggleSelection(this, 'cooking-tips-2')">
+            <div class="conversation-header">
+                <h4 class="conversation-title">Substitution Question</h4>
+                <div class="conversation-category">Cooking Tips</div>
+            </div>
+            <div class="conversation-content">
+                <div class="customer-message">
+                    Can I substitute your grape jelly for the apricot preserves in a recipe? What adjustments should I make?
+                </div>
+                <div class="assistant-message">
+                    Yes, you can substitute! Since grape jelly is smoother and sweeter than apricot preserves, you might want to reduce other sugars slightly and add a bit of lemon juice for tartness. The flavor profile will change but still be delicious.
+                </div>
+                <div class="quality-tags">
+                    <span class="quality-tag usecase">SUBSTITUTION</span>
+                    <span class="quality-tag complexity">TECHNICAL QUERY</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="conversation-card" onclick="toggleSelection(this, 'gift-planning-1')">
+            <div class="conversation-header">
+                <h4 class="conversation-title">Gift Basket Ideas</h4>
+                <div class="conversation-category">Gift Planning</div>
+            </div>
+            <div class="conversation-content">
+                <div class="customer-message">
+                    I want to create gift baskets with your products for my neighbors. What combinations work well together?
+                </div>
+                <div class="assistant-message">
+                    How thoughtful! For gift baskets, try pairing complementary flavors: strawberry preserves with our honey, dill pickles with garlic sauce, or a "breakfast basket" with multiple preserve flavors and our artisanal crackers. Here are 3 themed basket ideas...
+                </div>
+                <div class="quality-tags">
+                    <span class="quality-tag usecase">GIFT PLANNING</span>
+                    <span class="quality-tag complexity">MULTI-STEP REQUEST</span>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="progress-section">
-        <div class="progress-counter" id="progressCounter">0 of 9 prompts completed</div>
-        <p>Fill in all 9 test prompts to create a comprehensive smoke test set</p>
-        <button class="submit-btn" id="submitBtn" onclick="submitTestSet()" disabled>Submit Test Set</button>
+        <div class="progress-counter" id="progressCounter">0 of 3 conversations selected</div>
+        <p>Select 3 diverse customer conversations to create a focused smoke test set for the chatbot</p>
+        <button class="submit-btn" id="submitBtn" onclick="submitTestSet()" disabled>Create Smoke Test Set</button>
     </div>
 
     <div class="feedback" id="feedback">
-        <h3>Test Set Analysis</h3>
+        <h3>Smoke Test Set Created Successfully!</h3>
         
         <div class="coverage-check">
-            <h4>✓ Coverage Verification</h4>
-            <p><strong>Total Prompts:</strong> 9/9 ✓</p>
-            <p><strong>Recipe Search:</strong> 3/3 ✓</p>
-            <p><strong>Meal Planning:</strong> 3/3 ✓</p>
-            <p><strong>Cooking Tips:</strong> 3/3 ✓</p>
+            <h4>✓ Coverage Analysis</h4>
+            <p><strong>Total Conversations:</strong> 3/3 ✓</p>
+            <p><strong>Test Diversity:</strong> Different customer scenarios covered ✓</p>
+            <p><strong>Complexity Range:</strong> Mix of simple and complex requests ✓</p>
+            <p><strong>Edge Case Coverage:</strong> Various challenge levels included ✓</p>
         </div>
 
-        <div class="test-summary">
-            <h4>Your Test Set Summary</h4>
-            <div id="testSummary"></div>
+        <div class="selection-info">
+            <h4>Your Selected Test Set</h4>
+            <p>Your diverse selection covers various customer scenarios that Munson's Pickles and Preserves Farm chatbot needs to handle effectively:</p>
+            <ul>
+                <li><strong>Recipe Requests:</strong> Product-specific recipe inquiries</li>
+                <li><strong>Meal Planning:</strong> Integration of products into meal planning</li>
+                <li><strong>Cooking Tips:</strong> Technical guidance and troubleshooting</li>
+                <li><strong>Product Information:</strong> Ingredient and safety questions</li>
+                <li><strong>Seasonal Needs:</strong> Holiday and seasonal recipe requests</li>
+            </ul>
         </div>
 
-        <p><strong>Smoke Test Quality Tips:</strong></p>
-        <ul>
-            <li><strong>Diversity:</strong> Your prompts cover different scenarios within each intent</li>
-            <li><strong>Realism:</strong> Test cases reflect actual customer queries</li>
-            <li><strong>Coverage:</strong> All major user intents are represented</li>
-            <li><strong>Complexity:</strong> Mix of simple and complex queries tests system robustness</li>
-        </ul>
-
-        <p><strong>Next Step:</strong> These 9 prompts will be used in Task 5 for manual ACRUE evaluation of the chatbot's responses.</p>
+        <p><strong>Next Step:</strong> These 9 conversations will be used in Task 5 for manual ACRUE evaluation, where you'll assess how well the AI chatbot responds to each customer scenario.</p>
         
         <a href="../task-5-acrue-evaluation/index.html" class="next-task">Continue to Task 5: Manual ACRUE Evaluation</a>
     </div>
 
     <script>
-        function updateProgress() {
-            const inputs = document.querySelectorAll('.prompt-input');
-            let completedCount = 0;
-            
-            inputs.forEach(input => {
-                if (input.value.trim().length > 0) {
-                    completedCount++;
-                }
-            });
-            
-            document.getElementById('progressCounter').textContent = `${completedCount} of 9 prompts completed`;
-            document.getElementById('submitBtn').disabled = completedCount < 9;
-        }
+        let selectedConversations = new Set();
+        const maxSelections = 3;
 
-        // Add event listeners to all input fields
-        document.querySelectorAll('.prompt-input').forEach(input => {
-            input.addEventListener('input', updateProgress);
-        });
-
-        function submitTestSet() {
-            const inputs = document.querySelectorAll('.prompt-input');
-            let allFilled = true;
-            
-            inputs.forEach(input => {
-                if (input.value.trim().length === 0) {
-                    allFilled = false;
-                }
-            });
-            
-            if (!allFilled) {
-                alert('Please fill in all 9 test prompts before submitting.');
+        function toggleSelection(card, id) {
+            if (selectedConversations.has(id)) {
+                selectedConversations.delete(id);
+                card.classList.remove('selected');
+            } else if (selectedConversations.size < maxSelections) {
+                selectedConversations.add(id);
+                card.classList.add('selected');
+            } else {
+                alert(`You can only select ${maxSelections} conversations for the smoke test set.`);
                 return;
             }
             
-            // Generate test summary
-            generateTestSummary();
-            
-            document.getElementById('feedback').classList.add('show');
-            document.querySelector('.progress-section').style.display = 'none';
+            updateProgress();
         }
 
-        function generateTestSummary() {
-            const summaryContainer = document.getElementById('testSummary');
-            const intents = [
-                { name: 'Recipe Search & Discovery', ids: ['recipe1', 'recipe2', 'recipe3'] },
-                { name: 'Meal Planning', ids: ['planning1', 'planning2', 'planning3'] },
-                { name: 'Cooking Tips & Techniques', ids: ['cooking1', 'cooking2', 'cooking3'] }
-            ];
+        function updateProgress() {
+            const selectedCount = selectedConversations.size;
+            document.getElementById('progressCounter').textContent = `${selectedCount} of ${maxSelections} conversations selected`;
+            document.getElementById('submitBtn').disabled = selectedCount < maxSelections;
             
-            let summaryHTML = '';
+            // Update the banner counter
+            document.querySelector('.instructions-banner strong').textContent = `${selectedCount} / ${maxSelections} selected`;
+        }
+
+        function submitTestSet() {
+            if (selectedConversations.size < maxSelections) {
+                alert(`Please select ${maxSelections} conversations before creating the test set.`);
+                return;
+            }
             
-            intents.forEach(intent => {
-                summaryHTML += `<h5>${intent.name}</h5>`;
-                intent.ids.forEach((id, index) => {
-                    const value = document.getElementById(id).value.trim();
-                    const truncated = value.length > 60 ? value.substring(0, 60) + '...' : value;
-                    summaryHTML += `<div class="test-item">${index + 1}. ${truncated}</div>`;
-                });
+            generatePersonalizedFeedback();
+            document.getElementById('feedback').classList.add('show');
+            document.querySelector('.progress-section').style.display = 'none';
+            
+            // Scroll to feedback section
+            document.getElementById('feedback').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function generatePersonalizedFeedback() {
+            // Define the conversation data with categories and ideal selection criteria
+            const conversations = {
+                'recipe-search-1': { category: 'Recipe Request', complexity: 'Simple', usecase: 'Basic Recipe', diversity: 'recipe' },
+                'meal-planning-1': { category: 'Meal Planning', complexity: 'Complex', usecase: 'Weekly Planning', diversity: 'planning' },
+                'cooking-tips-1': { category: 'Cooking Tips', complexity: 'Medium', usecase: 'Product Usage', diversity: 'tips' },
+                'product-info-1': { category: 'Product Information', complexity: 'Simple', usecase: 'Ingredient Query', diversity: 'info' },
+                'recipe-search-2': { category: 'Recipe Request', complexity: 'Medium', usecase: 'Seasonal Recipe', diversity: 'seasonal' },
+                'troubleshooting-1': { category: 'Troubleshooting', complexity: 'Medium', usecase: 'Problem Solving', diversity: 'troubleshooting' },
+                'meal-planning-2': { category: 'Meal Planning', complexity: 'Complex', usecase: 'Event Planning', diversity: 'planning' },
+                'cooking-tips-2': { category: 'Cooking Tips', complexity: 'Medium', usecase: 'Substitution', diversity: 'tips' },
+                'gift-planning-1': { category: 'Gift Planning', complexity: 'Complex', usecase: 'Gift Planning', diversity: 'gift' }
+            };
+
+            const titles = {
+                'recipe-search-1': 'Simple Recipe Search',
+                'meal-planning-1': 'Weekly Meal Planning',
+                'cooking-tips-1': 'Product Usage Question',
+                'product-info-1': 'Ingredient Information',
+                'recipe-search-2': 'Seasonal Recipe Request',
+                'troubleshooting-1': 'Preserve Storage Issue',
+                'meal-planning-2': 'Holiday Menu Planning',
+                'cooking-tips-2': 'Substitution Question',
+                'gift-planning-1': 'Gift Basket Ideas'
+            };
+
+            const selectedArray = Array.from(selectedConversations);
+            const selectedData = selectedArray.map(id => ({ id, ...conversations[id], title: titles[id] }));
+
+            // Analyze diversity
+            const diversityTypes = [...new Set(selectedData.map(c => c.diversity))];
+            const complexityTypes = [...new Set(selectedData.map(c => c.complexity))];
+            const categoryTypes = [...new Set(selectedData.map(c => c.category))];
+
+            // Calculate coverage scores
+            const diversityScore = diversityTypes.length;
+            const complexityScore = complexityTypes.length;
+            const categoryScore = categoryTypes.length;
+            
+            // Ideal criteria for good test coverage
+            const idealCriteria = {
+                diversity: 3, // At least 3 different use case types
+                complexity: 2, // At least 2 complexity levels
+                categories: 3 // At least 3 different conversation categories
+            };
+
+            let feedbackHTML = '<h3>Smoke Test Set Analysis</h3>';
+            
+            // Overall score
+            const totalScore = Math.min(diversityScore, 3) + Math.min(complexityScore, 2) + Math.min(categoryScore, 3);
+            const maxScore = 8;
+            feedbackHTML += `<div class="score-section">Test Coverage Score: ${totalScore}/${maxScore}</div>`;
+
+            // Selected conversations
+            feedbackHTML += '<div class="feedback-section">';
+            feedbackHTML += '<h4>📋 Your Selected Test Set</h4>';
+            selectedData.forEach(conv => {
+                feedbackHTML += `<div class="feedback-item">
+                    <strong>${conv.title}</strong> 
+                    <span class="category-badge ${conv.complexity.toLowerCase()}">${conv.category}</span>
+                    <span class="complexity-badge ${conv.complexity.toLowerCase()}">${conv.complexity}</span>
+                    <br><em>Use case: ${conv.usecase}</em>
+                </div>`;
             });
+            feedbackHTML += '</div>';
+
+            // Coverage analysis
+            feedbackHTML += '<div class="feedback-section">';
+            feedbackHTML += '<h4>📊 Coverage Analysis</h4>';
             
-            summaryContainer.innerHTML = summaryHTML;
+            // Diversity coverage
+            const diversityGood = diversityScore >= idealCriteria.diversity;
+            feedbackHTML += `<div class="coverage-item ${diversityGood ? 'good' : 'needs-improvement'}">
+                <span class="coverage-badge ${diversityGood ? 'good' : 'warning'}">
+                    ${diversityGood ? '✓' : '⚠️'}
+                </span>
+                <strong>Use Case Diversity:</strong> ${diversityScore}/3 different types covered
+                ${diversityGood ? '' : ' - Consider adding more diverse conversation types'}
+            </div>`;
+
+            // Complexity coverage
+            const complexityGood = complexityScore >= idealCriteria.complexity;
+            feedbackHTML += `<div class="coverage-item ${complexityGood ? 'good' : 'needs-improvement'}">
+                <span class="coverage-badge ${complexityGood ? 'good' : 'warning'}">
+                    ${complexityGood ? '✓' : '⚠️'}
+                </span>
+                <strong>Complexity Range:</strong> ${complexityScore} complexity levels covered
+                ${complexityGood ? '' : ' - Include both simple and complex requests'}
+            </div>`;
+
+            // Category coverage
+            const categoryGood = categoryScore >= idealCriteria.categories;
+            feedbackHTML += `<div class="coverage-item ${categoryGood ? 'good' : 'needs-improvement'}">
+                <span class="coverage-badge ${categoryGood ? 'good' : 'warning'}">
+                    ${categoryGood ? '✓' : '⚠️'}
+                </span>
+                <strong>Category Breadth:</strong> ${categoryScore} conversation categories covered
+                ${categoryGood ? '' : ' - Try to include more conversation types'}
+            </div>`;
+
+            feedbackHTML += '</div>';
+
+            // Recommendations
+            feedbackHTML += '<div class="feedback-section">';
+            feedbackHTML += '<h4>💡 Testing Insights</h4>';
+
+            if (totalScore >= 7) {
+                feedbackHTML += '<div class="overall-feedback success">🎉 Excellent test set! Your selections provide comprehensive coverage of customer scenarios with good diversity across use cases, complexity levels, and conversation types. This will effectively test the chatbot\'s capabilities.</div>';
+            } else if (totalScore >= 5) {
+                feedbackHTML += '<div class="overall-feedback good">👍 Good test set! You\'ve covered most important scenarios. Consider whether you could improve diversity in the areas marked above for even better test coverage.</div>';
+            } else {
+                feedbackHTML += '<div class="overall-feedback needs-work">💡 Your test set covers some scenarios, but could be more diverse. Try selecting conversations that span different categories and complexity levels for better test coverage.</div>';
+            }
+
+            // Testing principles
+            feedbackHTML += `<div class="testing-principles">
+                <h5>Key Testing Principles Applied:</h5>
+                <ul>
+                    <li><strong>Scenario Diversity:</strong> ${diversityTypes.join(', ')}</li>
+                    <li><strong>Complexity Range:</strong> ${complexityTypes.join(', ')}</li>
+                    <li><strong>Conversation Types:</strong> ${categoryTypes.join(', ')}</li>
+                </ul>
+            </div>`;
+
+            feedbackHTML += '</div>';
+            
+            feedbackHTML += '<a href="../task-5-acrue-evaluation/index.html" class="next-task">Continue to Task 5: Manual ACRUE Evaluation</a>';
+            
+            document.getElementById('feedback').innerHTML = feedbackHTML;
         }
 
         // Initialize progress counter
