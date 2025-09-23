@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 5: Manual ACRUE Evaluation - Recipe Chatbot</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .navigation {
+            background: #f6f8fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-link {
+            color: #0969da;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        .header {
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+        .acrue-info {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .acrue-dimensions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .dimension-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+        .dimension-title {
+            font-weight: 600;
+            color: #0969da;
+            margin-bottom: 5px;
+        }
+        .dimension-desc {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .evaluation-item {
+            background: #fff;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            margin: 25px 0;
+            overflow: hidden;
+        }
+        .item-header {
+            background: #f6f8fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #d0d7de;
+        }
+        .prompt-text {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        .response-text {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-left: 4px solid #0969da;
+        }
+        .rating-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            padding: 20px;
+        }
+        .rating-section {
+            text-align: center;
+        }
+        .rating-label {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #374151;
+        }
+        .rating-scale {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .rating-option {
+            cursor: pointer;
+            padding: 8px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            background: white;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .rating-option:hover {
+            border-color: #0969da;
+            background: #f0f9ff;
+        }
+        .rating-option.selected {
+            border-color: #0969da;
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .progress-section {
+            background: #fff;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #0969da;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .submit-btn {
+            background: #0969da;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .submit-btn:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+        }
+        .feedback {
+            background: #d1edff;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .score-comparison {
+            background: white;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 15px;
+        }
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .alignment-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .aligned {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .close {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .completion-section {
+            background: #dcfce7;
+            border: 1px solid #16a34a;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="navigation">
+        <a href="../task-4-test-creation/index.html" class="nav-link">← Task 4: Test Creation</a>
+        <span>Task 5 of 5</span>
+        <a href="../index.html" class="nav-link">Back to Overview</a>
+    </div>
+
+    <div class="header">
+        <h1>Task 5: Manual ACRUE Evaluation</h1>
+        <p>Rate the chatbot's responses using the ACRUE framework on a 1-5 scale for each dimension.</p>
+    </div>
+
+    <div class="acrue-info">
+        <h3>ACRUE Evaluation Framework</h3>
+        <div class="acrue-dimensions">
+            <div class="dimension-card">
+                <div class="dimension-title">Accurate</div>
+                <div class="dimension-desc">Factually correct information</div>
+            </div>
+            <div class="dimension-card">
+                <div class="dimension-title">Complete</div>
+                <div class="dimension-desc">Thoroughly addresses query</div>
+            </div>
+            <div class="dimension-card">
+                <div class="dimension-title">Relevant</div>
+                <div class="dimension-desc">Relates to user's needs</div>
+            </div>
+            <div class="dimension-card">
+                <div class="dimension-title">Useful</div>
+                <div class="dimension-desc">Helpful for user's goals</div>
+            </div>
+            <div class="dimension-card">
+                <div class="dimension-title">Exceptional</div>
+                <div class="dimension-desc">Exceeds basic expectations</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Evaluation Item 1 -->
+    <div class="evaluation-item">
+        <div class="item-header">
+            <div class="prompt-text">Prompt: "I have ground beef, onions, and pasta. What's a quick dinner recipe for tonight?"</div>
+            <div class="response-text">
+                <strong>Chatbot Response:</strong> I recommend making a simple Ground Beef Pasta! Brown the ground beef with diced onions, add pasta sauce or tomatoes, and serve over cooked pasta. This takes about 20 minutes and is perfect for a weeknight dinner. Would you like the detailed recipe with cooking times?
+            </div>
+        </div>
+        <div class="rating-grid">
+            <div class="rating-section">
+                <div class="rating-label">Accurate</div>
+                <div class="rating-scale">
+                    <div class="rating-option" data-item="1" data-dimension="accurate" data-value="5" onclick="selectRating(1, 'accurate', 5)">5 - Excellent</div>
+                    <div class="rating-option" data-item="1" data-dimension="accurate" data-value="4" onclick="selectRating(1, 'accurate', 4)">4 - Very Good</div>
+                    <div class="rating-option" data-item="1" data-dimension="accurate" data-value="3" onclick="selectRating(1, 'accurate', 3)">3 - Good</div>
+                    <div class="rating-option" data-item="1" data-dimension="accurate" data-value="2" onclick="selectRating(1, 'accurate', 2)">2 - Fair</div>
+                    <div class="rating-option" data-item="1" data-dimension="accurate" data-value="1" onclick="selectRating(1, 'accurate', 1)">1 - Poor</div>
+                </div>
+            </div>
+            <div class="rating-section">
+                <div class="rating-label">Complete</div>
+                <div class="rating-scale">
+                    <div class="rating-option" data-item="1" data-dimension="complete" data-value="5" onclick="selectRating(1, 'complete', 5)">5 - Excellent</div>
+                    <div class="rating-option" data-item="1" data-dimension="complete" data-value="4" onclick="selectRating(1, 'complete', 4)">4 - Very Good</div>
+                    <div class="rating-option" data-item="1" data-dimension="complete" data-value="3" onclick="selectRating(1, 'complete', 3)">3 - Good</div>
+                    <div class="rating-option" data-item="1" data-dimension="complete" data-value="2" onclick="selectRating(1, 'complete', 2)">2 - Fair</div>
+                    <div class="rating-option" data-item="1" data-dimension="complete" data-value="1" onclick="selectRating(1, 'complete', 1)">1 - Poor</div>
+                </div>
+            </div>
+            <div class="rating-section">
+                <div class="rating-label">Relevant</div>
+                <div class="rating-scale">
+                    <div class="rating-option" data-item="1" data-dimension="relevant" data-value="5" onclick="selectRating(1, 'relevant', 5)">5 - Excellent</div>
+                    <div class="rating-option" data-item="1" data-dimension="relevant" data-value="4" onclick="selectRating(1, 'relevant', 4)">4 - Very Good</div>
+                    <div class="rating-option" data-item="1" data-dimension="relevant" data-value="3" onclick="selectRating(1, 'relevant', 3)">3 - Good</div>
+                    <div class="rating-option" data-item="1" data-dimension="relevant" data-value="2" onclick="selectRating(1, 'relevant', 2)">2 - Fair</div>
+                    <div class="rating-option" data-item="1" data-dimension="relevant" data-value="1" onclick="selectRating(1, 'relevant', 1)">1 - Poor</div>
+                </div>
+            </div>
+            <div class="rating-section">
+                <div class="rating-label">Useful</div>
+                <div class="rating-scale">
+                    <div class="rating-option" data-item="1" data-dimension="useful" data-value="5" onclick="selectRating(1, 'useful', 5)">5 - Excellent</div>
+                    <div class="rating-option" data-item="1" data-dimension="useful" data-value="4" onclick="selectRating(1, 'useful', 4)">4 - Very Good</div>
+                    <div class="rating-option" data-item="1" data-dimension="useful" data-value="3" onclick="selectRating(1, 'useful', 3)">3 - Good</div>
+                    <div class="rating-option" data-item="1" data-dimension="useful" data-value="2" onclick="selectRating(1, 'useful', 2)">2 - Fair</div>
+                    <div class="rating-option" data-item="1" data-dimension="useful" data-value="1" onclick="selectRating(1, 'useful', 1)">1 - Poor</div>
+                </div>
+            </div>
+            <div class="rating-section">
+                <div class="rating-label">Exceptional</div>
+                <div class="rating-scale">
+                    <div class="rating-option" data-item="1" data-dimension="exceptional" data-value="5" onclick="selectRating(1, 'exceptional', 5)">5 - Excellent</div>
+                    <div class="rating-option" data-item="1" data-dimension="exceptional" data-value="4" onclick="selectRating(1, 'exceptional', 4)">4 - Very Good</div>
+                    <div class="rating-option" data-item="1" data-dimension="exceptional" data-value="3" onclick="selectRating(1, 'exceptional', 3)">3 - Good</div>
+                    <div class="rating-option" data-item="1" data-dimension="exceptional" data-value="2" onclick="selectRating(1, 'exceptional', 2)">2 - Fair</div>
+                    <div class="rating-option" data-item="1" data-dimension="exceptional" data-value="1" onclick="selectRating(1, 'exceptional', 1)">1 - Poor</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Evaluation Item 2 -->
+    <div class="evaluation-item">
+        <div class="item-header">
+            <div class="prompt-text">Prompt: "Help me plan healthy meals for my family of 4 this week"</div>
+            <div class="response-text">
+                <strong>Chatbot Response:</strong> I'd love to help you plan healthy meals! Here's a balanced 7-day meal plan for 4 people: **Monday**: Baked salmon with quinoa and roasted vegetables, **Tuesday**: Turkey meatballs with whole wheat pasta and marinara, **Wednesday**: Chicken stir-fry with brown rice... Each meal includes lean protein, whole grains, and vegetables. Would you like me to create a shopping list organized by store sections?
+            </div>
+        </div>
+        <div class="rating-grid">
+            <div class="rating-section">
+                <div class="rating-label">Accurate</div>
+                <div class="rating-scale">
+                    <div class="rating-option" data-item="2" data-dimension="accurate" data-value="5" onclick="selectRating(2, 'accurate', 5)">5 - Excellent</div>
+                    <div class="rating-option" data-item="2" data-dimension="accurate" data-value="4" onclick="selectRating(2, 'accurate', 4)">4 - Very Good</div>
+                    <div class="rating-option" data-item="2" data-dimension="accurate" data-value="3" onclick="selectRating(2, 'accurate', 3)">3 - Good</div>
+                    <div class="rating-option" data-item="2" data-dimension="accurate" data-value="2" onclick="selectRating(2, 'accurate', 2)">2 - Fair</div>
+                    <div class="rating-option" data-item="2" data-dimension="accurate" data-value="1" onclick="selectRating(2, 'accurate', 1)">1 - Poor</div>
+                </div>
+            </div>
+            <div class="rating-section">
+                <div class="rating-label">Complete</div>
+                <div class="rating-scale">
+                    <div class="rating-option" data-item="2" data-dimension="complete" data-value="5" onclick="selectRating(2, 'complete', 5)">5 - Excellent</div>
+                    <div class="rating-option" data-item="2" data-dimension="complete" data-value="4" onclick="selectRating(2, 'complete', 4)">4 - Very Good</div>
+                    <div class="rating-option" data-item="2" data-dimension="complete" data-value="3" onclick="selectRating(2, 'complete', 3)">3 - Good</div>
+                    <div class="rating-option" data-item="2" data-dimension="complete" data-value="2" onclick="selectRating(2, 'complete', 2)">2 - Fair</div>
+                    <div class="rating-option" data-item="2" data-dimension="complete" data-value="1" onclick="selectRating(2, 'complete', 1)">1 - Poor</div>
+                </div>
+            </div>
+            <div class="rating-section">
+                <div class="rating-label">Relevant</div>
+                <div class="rating-scale">
+                    <div class="rating-option" data-item="2" data-dimension="relevant" data-value="5" onclick="selectRating(2, 'relevant', 5)">5 - Excellent</div>
+                    <div class="rating-option" data-item="2" data-dimension="relevant" data-value="4" onclick="selectRating(2, 'relevant', 4)">4 - Very Good</div>
+                    <div class="rating-option" data-item="2" data-dimension="relevant" data-value="3" onclick="selectRating(2, 'relevant', 3)">3 - Good</div>
+                    <div class="rating-option" data-item="2" data-dimension="relevant" data-value="2" onclick="selectRating(2, 'relevant', 2)">2 - Fair</div>
+                    <div class="rating-option" data-item="2" data-dimension="relevant" data-value="1" onclick="selectRating(2, 'relevant', 1)">1 - Poor</div>
+                </div>
+            </div>
+            <div class="rating-section">
+                <div class="rating-label">Useful</div>
+                <div class="rating-scale">
+                    <div class="rating-option" data-item="2" data-dimension="useful" data-value="5" onclick="selectRating(2, 'useful', 5)">5 - Excellent</div>
+                    <div class="rating-option" data-item="2" data-dimension="useful" data-value="4" onclick="selectRating(2, 'useful', 4)">4 - Very Good</div>
+                    <div class="rating-option" data-item="2" data-dimension="useful" data-value="3" onclick="selectRating(2, 'useful', 3)">3 - Good</div>
+                    <div class="rating-option" data-item="2" data-dimension="useful" data-value="2" onclick="selectRating(2, 'useful', 2)">2 - Fair</div>
+                    <div class="rating-option" data-item="2" data-dimension="useful" data-value="1" onclick="selectRating(2, 'useful', 1)">1 - Poor</div>
+                </div>
+            </div>
+            <div class="rating-section">
+                <div class="rating-label">Exceptional</div>
+                <div class="rating-scale">
+                    <div class="rating-option" data-item="2" data-dimension="exceptional" data-value="5" onclick="selectRating(2, 'exceptional', 5)">5 - Excellent</div>
+                    <div class="rating-option" data-item="2" data-dimension="exceptional" data-value="4" onclick="selectRating(2, 'exceptional', 4)">4 - Very Good</div>
+                    <div class="rating-option" data-item="2" data-dimension="exceptional" data-value="3" onclick="selectRating(2, 'exceptional', 3)">3 - Good</div>
+                    <div class="rating-option" data-item="2" data-dimension="exceptional" data-value="2" onclick="selectRating(2, 'exceptional', 2)">2 - Fair</div>
+                    <div class="rating-option" data-item="2" data-dimension="exceptional" data-value="1" onclick="selectRating(2, 'exceptional', 1)">1 - Poor</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress-section">
+        <h3>Evaluation Progress</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+        </div>
+        <p id="progressText">0 of 10 ratings completed</p>
+        <button class="submit-btn" id="submitBtn" onclick="submitEvaluation()" disabled>Submit ACRUE Evaluation</button>
+    </div>
+
+    <div class="feedback" id="feedback">
+        <h3>ACRUE Evaluation Results</h3>
+        
+        <div class="comparison-grid">
+            <div class="score-comparison">
+                <h4>Your Ratings</h4>
+                <div id="userScores"></div>
+            </div>
+            <div class="score-comparison">
+                <h4>Expert Ratings</h4>
+                <div id="expertScores"></div>
+            </div>
+        </div>
+
+        <div class="completion-section">
+            <h4>🎉 Exercise Complete!</h4>
+            <p><strong>ACRUE Evaluation Summary:</strong> You've successfully evaluated AI responses using the ACRUE framework. Your ratings were compared against expert evaluations with ±1 tolerance.</p>
+            
+            <p><strong>Key Learning:</strong> ACRUE provides a structured approach to assess AI response quality across multiple dimensions, helping identify specific areas for improvement.</p>
+            
+            <p><strong>Next Steps:</strong> Apply ACRUE evaluation to your own AI projects to ensure consistent, high-quality responses that meet user needs.</p>
+        </div>
+    </div>
+
+    <script>
+        let ratings = {};
+        const totalRatings = 10; // 2 items × 5 dimensions each
+        const expertRatings = {
+            1: { accurate: 4, complete: 3, relevant: 5, useful: 4, exceptional: 3 },
+            2: { accurate: 5, complete: 4, relevant: 5, useful: 5, exceptional: 4 }
+        };
+
+        function selectRating(item, dimension, value) {
+            // Clear previous selection for this item-dimension
+            document.querySelectorAll(`[data-item="${item}"][data-dimension="${dimension}"]`).forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            // Select the clicked option
+            document.querySelector(`[data-item="${item}"][data-dimension="${dimension}"][data-value="${value}"]`).classList.add('selected');
+            
+            // Store the rating
+            if (!ratings[item]) ratings[item] = {};
+            ratings[item][dimension] = value;
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let completedRatings = 0;
+            
+            // Count completed ratings
+            for (let item in ratings) {
+                for (let dimension in ratings[item]) {
+                    completedRatings++;
+                }
+            }
+            
+            const percentage = (completedRatings / totalRatings) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${completedRatings} of ${totalRatings} ratings completed`;
+            document.getElementById('submitBtn').disabled = completedRatings < totalRatings;
+        }
+
+        function submitEvaluation() {
+            let completedRatings = 0;
+            
+            // Verify all ratings are complete
+            for (let item in ratings) {
+                for (let dimension in ratings[item]) {
+                    completedRatings++;
+                }
+            }
+            
+            if (completedRatings < totalRatings) {
+                alert('Please complete all ACRUE ratings for both responses.');
+                return;
+            }
+            
+            displayResults();
+            document.getElementById('feedback').classList.add('show');
+            document.querySelector('.progress-section').style.display = 'none';
+        }
+
+        function displayResults() {
+            const dimensions = ['accurate', 'complete', 'relevant', 'useful', 'exceptional'];
+            const dimensionNames = {
+                accurate: 'Accurate',
+                complete: 'Complete', 
+                relevant: 'Relevant',
+                useful: 'Useful',
+                exceptional: 'Exceptional'
+            };
+            
+            let userHTML = '';
+            let expertHTML = '';
+            
+            for (let item = 1; item <= 2; item++) {
+                userHTML += `<h5>Response ${item}</h5>`;
+                expertHTML += `<h5>Response ${item}</h5>`;
+                
+                dimensions.forEach(dim => {
+                    const userScore = ratings[item][dim];
+                    const expertScore = expertRatings[item][dim];
+                    const isAligned = Math.abs(userScore - expertScore) <= 1;
+                    const badge = isAligned ? 'aligned' : 'close';
+                    const badgeText = isAligned ? '✓ Aligned' : '± Close';
+                    
+                    userHTML += `
+                        <div class="score-row">
+                            <span>${dimensionNames[dim]}</span>
+                            <span>${userScore}/5 <span class="alignment-badge ${badge}">${badgeText}</span></span>
+                        </div>`;
+                    
+                    expertHTML += `
+                        <div class="score-row">
+                            <span>${dimensionNames[dim]}</span>
+                            <span>${expertScore}/5</span>
+                        </div>`;
+                });
+            }
+            
+            document.getElementById('userScores').innerHTML = userHTML;
+            document.getElementById('expertScores').innerHTML = expertHTML;
+        }
+    </script>
+</body>
+</html>

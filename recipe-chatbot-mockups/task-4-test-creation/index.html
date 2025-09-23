@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 4: Create Smoke Test Set - Recipe Chatbot</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .navigation {
+            background: #f6f8fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-link {
+            color: #0969da;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        .header {
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+        .instructions {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .intent-section {
+            background: #fff;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            margin: 25px 0;
+            overflow: hidden;
+        }
+        .intent-header {
+            background: #f6f8fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #d0d7de;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .intent-content {
+            padding: 20px;
+        }
+        .prompt-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.4;
+            resize: vertical;
+            min-height: 60px;
+        }
+        .prompt-input:focus {
+            outline: none;
+            border-color: #0969da;
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+        }
+        .example-prompts {
+            background: #f8f9fa;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        .example-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        .example-list {
+            color: #6b7280;
+            margin: 5px 0;
+        }
+        .progress-section {
+            background: #fff;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .progress-counter {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0969da;
+            margin-bottom: 15px;
+        }
+        .submit-btn {
+            background: #0969da;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .submit-btn:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+        }
+        .feedback {
+            background: #d1edff;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .test-summary {
+            background: white;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .test-item {
+            margin: 8px 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .coverage-check {
+            background: #dcfce7;
+            border: 1px solid #16a34a;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .next-task {
+            background: #0969da;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="navigation">
+        <a href="../task-3-metrics-selection/index.html" class="nav-link">← Task 3: Metrics Selection</a>
+        <span>Task 4 of 5</span>
+        <a href="../task-5-acrue-evaluation/index.html" class="nav-link">Next: Task 5 →</a>
+    </div>
+
+    <div class="header">
+        <h1>Task 4: Create a Smoke Test Set</h1>
+        <p>Create 9 diverse test prompts (3 per user intent) to serve as a smoke test for the recipe chatbot.</p>
+    </div>
+
+    <div class="instructions">
+        <h3>Smoke Test Guidelines</h3>
+        <p><strong>Goal:</strong> Create a quick test set that covers the main user intents and helps identify obvious issues with the chatbot.</p>
+        <p><strong>Requirements:</strong> 3 prompts per intent (9 total), covering different scenarios and complexity levels for each intent.</p>
+    </div>
+
+    <!-- Recipe Search Intent -->
+    <div class="intent-section">
+        <div class="intent-header">Intent 1: Recipe Search & Discovery (3 prompts)</div>
+        <div class="intent-content">
+            <div class="example-prompts">
+                <div class="example-title">Example variations to test:</div>
+                <div class="example-list">• Ingredient-based search • Dietary restrictions • Quick/time-limited recipes • Cuisine preferences</div>
+            </div>
+            
+            <label for="recipe1"><strong>Prompt 1:</strong></label>
+            <textarea class="prompt-input" id="recipe1" placeholder="Enter a test prompt for recipe search (e.g., ingredient-based query)"></textarea>
+            
+            <label for="recipe2"><strong>Prompt 2:</strong></label>
+            <textarea class="prompt-input" id="recipe2" placeholder="Enter a different recipe search scenario"></textarea>
+            
+            <label for="recipe3"><strong>Prompt 3:</strong></label>
+            <textarea class="prompt-input" id="recipe3" placeholder="Enter a third recipe search variation"></textarea>
+        </div>
+    </div>
+
+    <!-- Meal Planning Intent -->
+    <div class="intent-section">
+        <div class="intent-header">Intent 2: Meal Planning (3 prompts)</div>
+        <div class="intent-content">
+            <div class="example-prompts">
+                <div class="example-title">Example variations to test:</div>
+                <div class="example-list">• Weekly planning • Family sizes • Budget constraints • Health goals • Special events</div>
+            </div>
+            
+            <label for="planning1"><strong>Prompt 1:</strong></label>
+            <textarea class="prompt-input" id="planning1" placeholder="Enter a test prompt for meal planning (e.g., weekly family meals)"></textarea>
+            
+            <label for="planning2"><strong>Prompt 2:</strong></label>
+            <textarea class="prompt-input" id="planning2" placeholder="Enter a different meal planning scenario"></textarea>
+            
+            <label for="planning3"><strong>Prompt 3:</strong></label>
+            <textarea class="prompt-input" id="planning3" placeholder="Enter a third meal planning variation"></textarea>
+        </div>
+    </div>
+
+    <!-- Cooking Tips Intent -->
+    <div class="intent-section">
+        <div class="intent-header">Intent 3: Cooking Tips & Techniques (3 prompts)</div>
+        <div class="intent-content">
+            <div class="example-prompts">
+                <div class="example-title">Example variations to test:</div>
+                <div class="example-list">• Troubleshooting problems • Technique questions • Substitutions • Equipment usage</div>
+            </div>
+            
+            <label for="cooking1"><strong>Prompt 1:</strong></label>
+            <textarea class="prompt-input" id="cooking1" placeholder="Enter a test prompt for cooking tips (e.g., technique question)"></textarea>
+            
+            <label for="cooking2"><strong>Prompt 2:</strong></label>
+            <textarea class="prompt-input" id="cooking2" placeholder="Enter a different cooking tips scenario"></textarea>
+            
+            <label for="cooking3"><strong>Prompt 3:</strong></label>
+            <textarea class="prompt-input" id="cooking3" placeholder="Enter a third cooking tips variation"></textarea>
+        </div>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-counter" id="progressCounter">0 of 9 prompts completed</div>
+        <p>Fill in all 9 test prompts to create a comprehensive smoke test set</p>
+        <button class="submit-btn" id="submitBtn" onclick="submitTestSet()" disabled>Submit Test Set</button>
+    </div>
+
+    <div class="feedback" id="feedback">
+        <h3>Test Set Analysis</h3>
+        
+        <div class="coverage-check">
+            <h4>✓ Coverage Verification</h4>
+            <p><strong>Total Prompts:</strong> 9/9 ✓</p>
+            <p><strong>Recipe Search:</strong> 3/3 ✓</p>
+            <p><strong>Meal Planning:</strong> 3/3 ✓</p>
+            <p><strong>Cooking Tips:</strong> 3/3 ✓</p>
+        </div>
+
+        <div class="test-summary">
+            <h4>Your Test Set Summary</h4>
+            <div id="testSummary"></div>
+        </div>
+
+        <p><strong>Smoke Test Quality Tips:</strong></p>
+        <ul>
+            <li><strong>Diversity:</strong> Your prompts cover different scenarios within each intent</li>
+            <li><strong>Realism:</strong> Test cases reflect actual customer queries</li>
+            <li><strong>Coverage:</strong> All major user intents are represented</li>
+            <li><strong>Complexity:</strong> Mix of simple and complex queries tests system robustness</li>
+        </ul>
+
+        <p><strong>Next Step:</strong> These 9 prompts will be used in Task 5 for manual ACRUE evaluation of the chatbot's responses.</p>
+        
+        <a href="../task-5-acrue-evaluation/index.html" class="next-task">Continue to Task 5: Manual ACRUE Evaluation</a>
+    </div>
+
+    <script>
+        function updateProgress() {
+            const inputs = document.querySelectorAll('.prompt-input');
+            let completedCount = 0;
+            
+            inputs.forEach(input => {
+                if (input.value.trim().length > 0) {
+                    completedCount++;
+                }
+            });
+            
+            document.getElementById('progressCounter').textContent = `${completedCount} of 9 prompts completed`;
+            document.getElementById('submitBtn').disabled = completedCount < 9;
+        }
+
+        // Add event listeners to all input fields
+        document.querySelectorAll('.prompt-input').forEach(input => {
+            input.addEventListener('input', updateProgress);
+        });
+
+        function submitTestSet() {
+            const inputs = document.querySelectorAll('.prompt-input');
+            let allFilled = true;
+            
+            inputs.forEach(input => {
+                if (input.value.trim().length === 0) {
+                    allFilled = false;
+                }
+            });
+            
+            if (!allFilled) {
+                alert('Please fill in all 9 test prompts before submitting.');
+                return;
+            }
+            
+            // Generate test summary
+            generateTestSummary();
+            
+            document.getElementById('feedback').classList.add('show');
+            document.querySelector('.progress-section').style.display = 'none';
+        }
+
+        function generateTestSummary() {
+            const summaryContainer = document.getElementById('testSummary');
+            const intents = [
+                { name: 'Recipe Search & Discovery', ids: ['recipe1', 'recipe2', 'recipe3'] },
+                { name: 'Meal Planning', ids: ['planning1', 'planning2', 'planning3'] },
+                { name: 'Cooking Tips & Techniques', ids: ['cooking1', 'cooking2', 'cooking3'] }
+            ];
+            
+            let summaryHTML = '';
+            
+            intents.forEach(intent => {
+                summaryHTML += `<h5>${intent.name}</h5>`;
+                intent.ids.forEach((id, index) => {
+                    const value = document.getElementById(id).value.trim();
+                    const truncated = value.length > 60 ? value.substring(0, 60) + '...' : value;
+                    summaryHTML += `<div class="test-item">${index + 1}. ${truncated}</div>`;
+                });
+            });
+            
+            summaryContainer.innerHTML = summaryHTML;
+        }
+
+        // Initialize progress counter
+        updateProgress();
+    </script>
+</body>
+</html>

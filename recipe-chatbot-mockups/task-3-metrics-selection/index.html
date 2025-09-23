@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3: Select Evaluation Metrics - Recipe Chatbot</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .navigation {
+            background: #f6f8fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-link {
+            color: #0969da;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+        .header {
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+        .context-box {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .metric-card {
+            border: 2px solid #d0d7de;
+            border-radius: 6px;
+            background: white;
+            transition: all 0.2s;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .metric-card:hover {
+            border-color: #0969da;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .metric-card.selected {
+            border-color: #0969da;
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+            background: #f0f9ff;
+        }
+        .metric-header {
+            background: #f6f8fa;
+            padding: 15px;
+            border-bottom: 1px solid #d0d7de;
+        }
+        .metric-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .metric-category {
+            font-size: 12px;
+            color: #656d76;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .metric-content {
+            padding: 15px;
+        }
+        .metric-description {
+            color: #4b5563;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .metric-use-case {
+            font-size: 13px;
+            color: #0969da;
+            font-style: italic;
+        }
+        .selection-summary {
+            background: #fff;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .selected-metrics {
+            margin: 15px 0;
+        }
+        .selected-metric-tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 6px 12px;
+            border-radius: 12px;
+            margin: 5px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .submit-btn {
+            background: #0969da;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .submit-btn:disabled {
+            background: #6b7280;
+            cursor: not-allowed;
+        }
+        .feedback {
+            background: #d1edff;
+            border: 1px solid #0969da;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+        }
+        .feedback.show {
+            display: block;
+        }
+        .dashboard-preview {
+            background: white;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .metric-score {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .score-bar {
+            width: 60%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .score-fill {
+            height: 100%;
+            background: #0969da;
+            border-radius: 10px;
+        }
+        .next-task {
+            background: #0969da;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="navigation">
+        <a href="../task-2-intent-matching/index.html" class="nav-link">← Task 2: Intent Matching</a>
+        <span>Task 3 of 5</span>
+        <a href="../task-4-test-creation/index.html" class="nav-link">Next: Task 4 →</a>
+    </div>
+
+    <div class="header">
+        <h1>Task 3: Select Evaluation Metrics</h1>
+        <p>Choose 3 Azure AI Foundry evaluation metrics that are most relevant for evaluating the recipe chatbot's performance.</p>
+    </div>
+
+    <div class="context-box">
+        <h3>Recipe Chatbot Evaluation Context</h3>
+        <p><strong>Business Goals:</strong></p>
+        <ul>
+            <li>Provide accurate recipe information and cooking guidance</li>
+            <li>Help customers discover relevant recipes based on their needs</li>
+            <li>Maintain helpful, friendly conversation that encourages cooking</li>
+            <li>Ensure responses are safe and appropriate for all family members</li>
+        </ul>
+        <p><strong>Success Criteria:</strong> High customer satisfaction, accurate information, relevant suggestions, and appropriate content</p>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="metric-card" data-metric="groundedness" onclick="toggleMetric('groundedness')">
+            <div class="metric-header">
+                <div class="metric-title">Groundedness</div>
+                <div class="metric-category">Accuracy Metric</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Measures how well responses are supported by reliable sources and factual information</div>
+                <div class="metric-use-case">Best for: Recipe accuracy, cooking facts, nutritional information</div>
+            </div>
+        </div>
+
+        <div class="metric-card" data-metric="relevance" onclick="toggleMetric('relevance')">
+            <div class="metric-header">
+                <div class="metric-title">Relevance</div>
+                <div class="metric-category">Quality Metric</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Evaluates how well responses address the user's specific query and context</div>
+                <div class="metric-use-case">Best for: Recipe recommendations, personalized suggestions</div>
+            </div>
+        </div>
+
+        <div class="metric-card" data-metric="coherence" onclick="toggleMetric('coherence')">
+            <div class="metric-header">
+                <div class="metric-title">Coherence</div>
+                <div class="metric-category">Quality Metric</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Assesses how logical, clear, and well-structured the responses are</div>
+                <div class="metric-use-case">Best for: Recipe instructions, step-by-step guidance</div>
+            </div>
+        </div>
+
+        <div class="metric-card" data-metric="content-safety" onclick="toggleMetric('content-safety')">
+            <div class="metric-header">
+                <div class="metric-title">Content Safety</div>
+                <div class="metric-category">Safety Metric</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Detects harmful, inappropriate, or unsafe content in AI responses</div>
+                <div class="metric-use-case">Best for: Family-safe interactions, appropriate content</div>
+            </div>
+        </div>
+
+        <div class="metric-card" data-metric="similarity" onclick="toggleMetric('similarity')">
+            <div class="metric-header">
+                <div class="metric-title">Similarity</div>
+                <div class="metric-category">Comparison Metric</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Compares AI responses against reference answers or expected outputs</div>
+                <div class="metric-use-case">Best for: Standardized responses, template validation</div>
+            </div>
+        </div>
+
+        <div class="metric-card" data-metric="fluency" onclick="toggleMetric('fluency')">
+            <div class="metric-header">
+                <div class="metric-title">Fluency</div>
+                <div class="metric-category">Language Metric</div>
+            </div>
+            <div class="metric-content">
+                <div class="metric-description">Measures grammatical correctness and natural language quality</div>
+                <div class="metric-use-case">Best for: Conversational quality, readability</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="selection-summary">
+        <h3>Your Selected Metrics</h3>
+        <div class="selected-metrics" id="selectedMetrics">
+            <em>No metrics selected yet</em>
+        </div>
+        <p>Select exactly 3 metrics that best align with the recipe chatbot's evaluation needs.</p>
+        <button class="submit-btn" id="submitBtn" onclick="submitMetrics()" disabled>Submit Metrics Selection</button>
+    </div>
+
+    <div class="feedback" id="feedback">
+        <h3>Feedback</h3>
+        <p><strong>Recommended Metrics for Recipe Chatbot:</strong></p>
+        <ol>
+            <li><strong>Groundedness</strong> - Critical for ensuring recipe accuracy and safe cooking information</li>
+            <li><strong>Relevance</strong> - Essential for providing personalized recipe recommendations</li>
+            <li><strong>Content Safety</strong> - Important for family-friendly interactions and appropriate content</li>
+        </ol>
+
+        <div class="dashboard-preview">
+            <h4>Sample Evaluation Dashboard</h4>
+            <div class="metric-score">
+                <span><strong>Groundedness Score</strong></span>
+                <div class="score-bar">
+                    <div class="score-fill" style="width: 85%;"></div>
+                </div>
+                <span>85%</span>
+            </div>
+            <div class="metric-score">
+                <span><strong>Relevance Score</strong></span>
+                <div class="score-bar">
+                    <div class="score-fill" style="width: 78%;"></div>
+                </div>
+                <span>78%</span>
+            </div>
+            <div class="metric-score">
+                <span><strong>Content Safety Score</strong></span>
+                <div class="score-bar">
+                    <div class="score-fill" style="width: 95%;"></div>
+                </div>
+                <span>95%</span>
+            </div>
+        </div>
+
+        <p><strong>Why these metrics matter:</strong></p>
+        <ul>
+            <li><strong>Groundedness</strong> ensures customers receive accurate cooking information and safe food handling advice</li>
+            <li><strong>Relevance</strong> measures how well the chatbot matches recipes to customer preferences and constraints</li>
+            <li><strong>Content Safety</strong> maintains family-appropriate interactions in a grocery/cooking context</li>
+        </ul>
+        
+        <a href="../task-4-test-creation/index.html" class="next-task">Continue to Task 4: Create Smoke Test Set</a>
+    </div>
+
+    <script>
+        let selectedMetrics = new Set();
+
+        function toggleMetric(metric) {
+            const card = document.querySelector(`[data-metric="${metric}"]`);
+            
+            if (selectedMetrics.has(metric)) {
+                selectedMetrics.delete(metric);
+                card.classList.remove('selected');
+            } else {
+                if (selectedMetrics.size < 3) {
+                    selectedMetrics.add(metric);
+                    card.classList.add('selected');
+                } else {
+                    alert('You can only select 3 metrics. Please deselect one first.');
+                    return;
+                }
+            }
+            
+            updateSelectedDisplay();
+        }
+
+        function updateSelectedDisplay() {
+            const container = document.getElementById('selectedMetrics');
+            
+            if (selectedMetrics.size === 0) {
+                container.innerHTML = '<em>No metrics selected yet</em>';
+                document.getElementById('submitBtn').disabled = true;
+                return;
+            }
+
+            const metricNames = {
+                'groundedness': 'Groundedness',
+                'relevance': 'Relevance',
+                'coherence': 'Coherence',
+                'content-safety': 'Content Safety',
+                'similarity': 'Similarity',
+                'fluency': 'Fluency'
+            };
+
+            container.innerHTML = Array.from(selectedMetrics)
+                .map(metric => `<span class="selected-metric-tag">${metricNames[metric]}</span>`)
+                .join('');
+                
+            document.getElementById('submitBtn').disabled = selectedMetrics.size !== 3;
+        }
+
+        function submitMetrics() {
+            if (selectedMetrics.size !== 3) {
+                alert('Please select exactly 3 metrics for evaluation.');
+                return;
+            }
+            
+            document.getElementById('feedback').classList.add('show');
+            document.querySelector('.selection-summary').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
