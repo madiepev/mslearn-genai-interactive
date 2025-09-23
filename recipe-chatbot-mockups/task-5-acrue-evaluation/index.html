@@ -368,6 +368,26 @@
             margin: 20px 0;
             text-align: center;
         }
+        .reset-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .reset-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .reset-btn:hover {
+            background: #4b5563;
+        }
     </style>
 </head>
 <body>
@@ -592,13 +612,17 @@
         </div>
 
         <div class="completion-section">
-            <h4>🎉 Exercise Complete!</h4>
+            <h4>Exercise Complete!</h4>
             <p><strong>ACRUE Evaluation Summary:</strong> You've successfully evaluated AI responses using the ACRUE framework. Your ratings were compared against expert evaluations with ±1 tolerance.</p>
             
             <p><strong>Key Learning:</strong> ACRUE provides a structured approach to assess AI response quality across multiple dimensions, helping identify specific areas for improvement.</p>
             
             <p><strong>Next Steps:</strong> Apply ACRUE evaluation to your own AI projects to ensure consistent, high-quality responses that meet user needs.</p>
         </div>
+    </div>
+
+    <div class="reset-section">
+        <button class="reset-btn" onclick="location.reload()">Reset Exercise</button>
     </div>
 
     <script>
@@ -738,16 +762,16 @@
             // Overall feedback
             let overallFeedback;
             if (alignmentPercentage >= 80) {
-                overallFeedback = '<div class="overall-feedback excellent">🎉 Excellent evaluation skills! Your ACRUE ratings closely align with expert assessments, demonstrating strong understanding of AI response quality evaluation.</div>';
+                overallFeedback = '<div class="overall-feedback excellent">Excellent evaluation skills! Your ACRUE ratings closely align with expert assessments, demonstrating strong understanding of AI response quality evaluation.</div>';
             } else if (alignmentPercentage >= 60) {
-                overallFeedback = '<div class="overall-feedback good">👍 Good evaluation judgment! You\'re developing solid ACRUE evaluation skills with mostly aligned ratings. Consider the areas where you differ from experts.</div>';
+                overallFeedback = '<div class="overall-feedback good">Good evaluation judgment! You\'re developing solid ACRUE evaluation skills with mostly aligned ratings. Consider the areas where you differ from experts.</div>';
             } else {
-                overallFeedback = '<div class="overall-feedback needs-work">💡 Keep practicing! ACRUE evaluation takes time to master. Focus on understanding what makes responses accurate, complete, relevant, useful, and exceptional.</div>';
+                overallFeedback = '<div class="overall-feedback needs-work">Keep practicing! ACRUE evaluation takes time to master. Focus on understanding what makes responses accurate, complete, relevant, useful, and exceptional.</div>';
             }
             
             // Detailed insights
             let insightsHTML = '<div class="evaluation-insights">';
-            insightsHTML += `<h4>📊 Evaluation Insights</h4>
+            insightsHTML += `<h4>Evaluation Insights</h4>
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-number">${alignedRatings}</div>
@@ -772,7 +796,7 @@
             insightsHTML += '<h5>Key Observations</h5><ul>';
             
             if (alignedRatings > 5) {
-                insightsHTML += '<li>✅ Strong consistency with expert judgment across multiple dimensions</li>';
+                insightsHTML += '<li>Strong consistency with expert judgment across multiple dimensions</li>';
             }
             if (closeRatings > 3) {
                 insightsHTML += '<li>📍 Good directional alignment with minor rating differences</li>';
@@ -801,7 +825,7 @@
             });
             
             if (maxDiff > 0.5) {
-                insightsHTML += `<li>🎯 Consider refining your understanding of <strong>${dimensionNames[maxDiffDim]}</strong> - largest difference from expert ratings</li>`;
+                insightsHTML += `<li>Consider refining your understanding of <strong>${dimensionNames[maxDiffDim]}</strong> - largest difference from expert ratings</li>`;
             }
             
             insightsHTML += '</ul></div>';
@@ -813,7 +837,7 @@
                 ${comparisonHTML}
                 ${insightsHTML}
                 <div class="completion-section">
-                    <h4>🎯 ACRUE Framework Mastery</h4>
+                    <h4>ACRUE Framework Mastery</h4>
                     <p><strong>What You've Learned:</strong> The ACRUE framework provides structured evaluation of AI responses across five critical dimensions. This systematic approach helps identify specific strengths and improvement areas.</p>
                     <p><strong>Next Steps:</strong> Apply ACRUE evaluation to your own AI projects. Remember that different perspectives can be valuable - the goal is consistent, thoughtful evaluation rather than perfect agreement.</p>
                 </div>

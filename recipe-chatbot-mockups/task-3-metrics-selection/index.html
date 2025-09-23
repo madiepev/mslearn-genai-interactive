@@ -253,6 +253,26 @@
             background: #fee2e2;
             border: 1px solid #dc2626;
         }
+        .reset-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .reset-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .reset-btn:hover {
+            background: #4b5563;
+        }
     </style>
 </head>
 <body>
@@ -436,6 +456,10 @@
         <a href="../task-4-test-creation/index.html" class="next-task">Continue to Task 4: Create Smoke Test Set</a>
     </div>
 
+    <div class="reset-section">
+        <button class="reset-btn" onclick="location.reload()">Reset Exercise</button>
+    </div>
+
     <script>
         let selectedMetrics = new Set();
 
@@ -537,7 +561,7 @@
             // Correct selections
             if (correct.length > 0) {
                 feedbackHTML += '<div class="feedback-section correct-section">';
-                feedbackHTML += '<h4>✅ Excellent Choices</h4>';
+                feedbackHTML += '<h4>Excellent Choices</h4>';
                 correct.forEach(metric => {
                     feedbackHTML += `<div class="feedback-item">
                         <span class="correct-badge">CORRECT</span>
@@ -550,7 +574,7 @@
             // Incorrect selections
             if (incorrect.length > 0) {
                 feedbackHTML += '<div class="feedback-section incorrect-section">';
-                feedbackHTML += '<h4>⚠️ Consider Reconsidering</h4>';
+                feedbackHTML += '<h4>Consider Reconsidering</h4>';
                 incorrect.forEach(metric => {
                     feedbackHTML += `<div class="feedback-item">
                         <span class="incorrect-badge">RECONSIDER</span>
@@ -563,7 +587,7 @@
             // Missed important metrics
             if (missed.length > 0) {
                 feedbackHTML += '<div class="feedback-section missed-section">';
-                feedbackHTML += '<h4>📝 Key Metrics You Missed</h4>';
+                feedbackHTML += '<h4>Key Metrics You Missed</h4>';
                 missed.forEach(metric => {
                     feedbackHTML += `<div class="feedback-item">
                         <span class="missed-badge">MISSED</span>
@@ -576,11 +600,11 @@
             // Overall feedback
             let overallFeedback;
             if (score === 3) {
-                overallFeedback = '<div class="overall-feedback success">🎉 Perfect! You\'ve identified the three most critical metrics for evaluating a recipe chatbot. Your selections prioritize accuracy, relevance, and safety - exactly what Munson\'s customers need.</div>';
+                overallFeedback = '<div class="overall-feedback success">Perfect! You\'ve identified the three most critical metrics for evaluating a recipe chatbot. Your selections prioritize accuracy, relevance, and safety - exactly what Munson\'s customers need.</div>';
             } else if (score === 2) {
-                overallFeedback = '<div class="overall-feedback good">👍 Great job! You\'ve captured most of the essential metrics. Consider how the missed metric could enhance your evaluation strategy.</div>';
+                overallFeedback = '<div class="overall-feedback good">Great job! You\'ve captured most of the essential metrics. Consider how the missed metric could enhance your evaluation strategy.</div>';
             } else {
-                overallFeedback = '<div class="overall-feedback needs-work">💡 Good start! Focus on metrics that ensure recipe accuracy, customer relevance, and safety. These are the foundation of a trustworthy food-related AI system.</div>';
+                overallFeedback = '<div class="overall-feedback needs-work">Good start! Focus on metrics that ensure recipe accuracy, customer relevance, and safety. These are the foundation of a trustworthy food-related AI system.</div>';
             }
 
             feedbackHTML += overallFeedback;

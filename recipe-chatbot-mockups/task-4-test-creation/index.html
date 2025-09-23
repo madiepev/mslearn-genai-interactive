@@ -21,7 +21,22 @@
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+                  // Diversity coverage
+            const diversityGood = diversityScore >= idealCriteria.diversity;
+            feedbackHTML += `<div class="coverage-item ${diversityGood ? 'good' : 'needs-improvement'}">
+                <span class="coverage-badge ${diversityGood ? 'good' : 'warning'}">
+                    ${diversityGood ? 'GOOD' : 'IMPROVE'}
+                </span>
+                <strong>Use Case Diversity:</strong> ${diversityScore}/3 different types covered
+                ${diversityGood ? '' : ' - Consider adding more diverse conversation types'}
+            </div>`;
+
+            // Complexity coverage
+            const complexityGood = complexityScore >= idealCriteria.complexity;
+            feedbackHTML += `<div class="coverage-item ${complexityGood ? 'good' : 'needs-improvement'}">
+                <span class="coverage-badge ${complexityGood ? 'good' : 'warning'}">
+                    ${complexityGood ? 'GOOD' : 'IMPROVE'}
+                </span>`s: center;
         }
         .nav-link {
             color: #0969da;
@@ -370,6 +385,26 @@
             padding: 20px;
             margin: 20px 0;
         }
+        .reset-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .reset-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .reset-btn:hover {
+            background: #4b5563;
+        }
     </style>
 </head>
 <body>
@@ -582,11 +617,11 @@
         <h3>Smoke Test Set Created Successfully!</h3>
         
         <div class="coverage-check">
-            <h4>✓ Coverage Analysis</h4>
-            <p><strong>Total Conversations:</strong> 3/3 ✓</p>
-            <p><strong>Test Diversity:</strong> Different customer scenarios covered ✓</p>
-            <p><strong>Complexity Range:</strong> Mix of simple and complex requests ✓</p>
-            <p><strong>Edge Case Coverage:</strong> Various challenge levels included ✓</p>
+            <h4>Coverage Analysis</h4>
+            <p><strong>Total Conversations:</strong> 3/3</p>
+            <p><strong>Test Diversity:</strong> Different customer scenarios covered</p>
+            <p><strong>Complexity Range:</strong> Mix of simple and complex requests</p>
+            <p><strong>Edge Case Coverage:</strong> Various challenge levels included</p>
         </div>
 
         <div class="selection-info">
@@ -604,6 +639,10 @@
         <p><strong>Next Step:</strong> These 9 conversations will be used in Task 5 for manual ACRUE evaluation, where you'll assess how well the AI chatbot responds to each customer scenario.</p>
         
         <a href="../task-5-acrue-evaluation/index.html" class="next-task">Continue to Task 5: Manual ACRUE Evaluation</a>
+    </div>
+
+    <div class="reset-section">
+        <button class="reset-btn" onclick="location.reload()">Reset Exercise</button>
     </div>
 
     <script>
@@ -703,7 +742,7 @@
 
             // Selected conversations
             feedbackHTML += '<div class="feedback-section">';
-            feedbackHTML += '<h4>📋 Your Selected Test Set</h4>';
+            feedbackHTML += '<h4>Your Selected Test Set</h4>';
             selectedData.forEach(conv => {
                 feedbackHTML += `<div class="feedback-item">
                     <strong>${conv.title}</strong> 
@@ -716,13 +755,13 @@
 
             // Coverage analysis
             feedbackHTML += '<div class="feedback-section">';
-            feedbackHTML += '<h4>📊 Coverage Analysis</h4>';
+            feedbackHTML += '<h4>Coverage Analysis</h4>';
             
             // Diversity coverage
             const diversityGood = diversityScore >= idealCriteria.diversity;
             feedbackHTML += `<div class="coverage-item ${diversityGood ? 'good' : 'needs-improvement'}">
                 <span class="coverage-badge ${diversityGood ? 'good' : 'warning'}">
-                    ${diversityGood ? '✓' : '⚠️'}
+                    ${diversityGood ? 'GOOD' : 'IMPROVE'}
                 </span>
                 <strong>Use Case Diversity:</strong> ${diversityScore}/3 different types covered
                 ${diversityGood ? '' : ' - Consider adding more diverse conversation types'}
@@ -732,7 +771,7 @@
             const complexityGood = complexityScore >= idealCriteria.complexity;
             feedbackHTML += `<div class="coverage-item ${complexityGood ? 'good' : 'needs-improvement'}">
                 <span class="coverage-badge ${complexityGood ? 'good' : 'warning'}">
-                    ${complexityGood ? '✓' : '⚠️'}
+                    ${complexityGood ? 'GOOD' : 'IMPROVE'}
                 </span>
                 <strong>Complexity Range:</strong> ${complexityScore} complexity levels covered
                 ${complexityGood ? '' : ' - Include both simple and complex requests'}
@@ -742,7 +781,7 @@
             const categoryGood = categoryScore >= idealCriteria.categories;
             feedbackHTML += `<div class="coverage-item ${categoryGood ? 'good' : 'needs-improvement'}">
                 <span class="coverage-badge ${categoryGood ? 'good' : 'warning'}">
-                    ${categoryGood ? '✓' : '⚠️'}
+                    ${categoryGood ? 'GOOD' : 'IMPROVE'}
                 </span>
                 <strong>Category Breadth:</strong> ${categoryScore} conversation categories covered
                 ${categoryGood ? '' : ' - Try to include more conversation types'}
@@ -752,14 +791,14 @@
 
             // Recommendations
             feedbackHTML += '<div class="feedback-section">';
-            feedbackHTML += '<h4>💡 Testing Insights</h4>';
+            feedbackHTML += '<h4>Testing Insights</h4>';
 
             if (totalScore >= 7) {
-                feedbackHTML += '<div class="overall-feedback success">🎉 Excellent test set! Your selections provide comprehensive coverage of customer scenarios with good diversity across use cases, complexity levels, and conversation types. This will effectively test the chatbot\'s capabilities.</div>';
+                feedbackHTML += '<div class="overall-feedback success">Excellent test set! Your selections provide comprehensive coverage of customer scenarios with good diversity across use cases, complexity levels, and conversation types. This will effectively test the chatbot\'s capabilities.</div>';
             } else if (totalScore >= 5) {
-                feedbackHTML += '<div class="overall-feedback good">👍 Good test set! You\'ve covered most important scenarios. Consider whether you could improve diversity in the areas marked above for even better test coverage.</div>';
+                feedbackHTML += '<div class="overall-feedback good">Good test set! You\'ve covered most important scenarios. Consider whether you could improve diversity in the areas marked above for even better test coverage.</div>';
             } else {
-                feedbackHTML += '<div class="overall-feedback needs-work">💡 Your test set covers some scenarios, but could be more diverse. Try selecting conversations that span different categories and complexity levels for better test coverage.</div>';
+                feedbackHTML += '<div class="overall-feedback needs-work">Your test set covers some scenarios, but could be more diverse. Try selecting conversations that span different categories and complexity levels for better test coverage.</div>';
             }
 
             // Testing principles

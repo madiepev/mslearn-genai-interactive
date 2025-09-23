@@ -192,6 +192,26 @@
             margin-top: 20px;
             font-weight: 500;
         }
+        .reset-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .reset-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .reset-btn:hover {
+            background: #4b5563;
+        }
     </style>
 </head>
 <body>
@@ -295,6 +315,10 @@
         <a href="../task-3-metrics-selection/index.html" class="next-task">Continue to Task 3: Select Evaluation Metrics</a>
     </div>
 
+    <div class="reset-section">
+        <button class="reset-btn" onclick="location.reload()">Reset Exercise</button>
+    </div>
+
     <script>
         let selections = {};
 
@@ -372,7 +396,7 @@
                 const isCorrect = userChoice === correctChoice;
                 
                 feedbackHTML += `<div class="feedback-item ${isCorrect ? 'correct' : 'incorrect'}">`;
-                feedbackHTML += `<span class="${isCorrect ? 'correct-badge' : 'incorrect-badge'}">${isCorrect ? '✅ CORRECT' : '❌ INCORRECT'}</span>`;
+                feedbackHTML += `<span class="${isCorrect ? 'correct-badge' : 'incorrect-badge'}">${isCorrect ? 'CORRECT' : 'INCORRECT'}</span>`;
                 feedbackHTML += `<strong>${queryTitles[intent]}:</strong> `;
                 
                 if (isCorrect) {

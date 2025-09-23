@@ -176,6 +176,26 @@
             margin-top: 20px;
             font-weight: 500;
         }
+        .reset-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .reset-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        .reset-btn:hover {
+            background: #4b5563;
+        }
     </style>
 </head>
 <body>
@@ -273,6 +293,10 @@
         <a href="../task-2-intent-matching/index.html" class="next-task">Continue to Task 2: Match Intents to Responses</a>
     </div>
 
+    <div class="reset-section">
+        <button class="reset-btn" onclick="location.reload()">Reset Exercise</button>
+    </div>
+
     <script>
         let selectedNeeds = new Set();
 
@@ -339,7 +363,7 @@
             
             // Correct selections feedback
             if (correctSelections.length > 0) {
-                feedbackHTML += '<div class="correct-section"><h4>✅ Correct Selections:</h4><ul>';
+                feedbackHTML += '<div class="correct-section"><h4>Correct Selections:</h4><ul>';
                 correctSelections.forEach(need => {
                     const explanations = {
                         'recipe-search': 'Core functionality - customers expect to find recipes easily',
@@ -353,7 +377,7 @@
             
             // Incorrect selections feedback
             if (incorrectSelections.length > 0) {
-                feedbackHTML += '<div class="incorrect-section"><h4>❌ Incorrect Selections:</h4><ul>';
+                feedbackHTML += '<div class="incorrect-section"><h4>Incorrect Selections:</h4><ul>';
                 incorrectSelections.forEach(need => {
                     const explanations = {
                         'price-comparison': 'Not core to recipe functionality - belongs in e-commerce features',
@@ -370,7 +394,7 @@
             
             // Missed correct answers
             if (missedCorrect.length > 0) {
-                feedbackHTML += '<div class="missed-section"><h4>⚠️ You Missed:</h4><ul>';
+                feedbackHTML += '<div class="missed-section"><h4>You Missed:</h4><ul>';
                 missedCorrect.forEach(need => {
                     const explanations = {
                         'recipe-search': 'Essential core functionality for any recipe chatbot',
