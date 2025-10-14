@@ -15,7 +15,6 @@ body:
       required: true
 
   # Use Case Selection from fictional companies
-  # Based on fictional-names.md companies with business context inferred from project patterns
   - type: dropdown
     id: use_case
     attributes:
@@ -62,86 +61,35 @@ body:
     validations:
       required: true
 
-  # Number of tasks (4-6 as specified)
-  - type: dropdown
-    id: num_tasks
+  # Learning Objectives
+  - type: textarea
+    id: learning_objectives
     attributes:
-      label: Number of Tasks
-      description: Select the number of interactive tasks for this lab (typically 4-6 tasks)
-      options:
-        - "4"
-        - "5"
-        - "6"
+      label: Learning Objectives
+      description: |
+        List the key learning objectives for this lab. What should learners be able to do after completing this lab?
+        
+        **Examples:**
+        - Identify relevant user needs for AI systems
+        - Evaluate response quality using systematic criteria
+        - Select appropriate evaluation metrics for business contexts
+        - Apply evaluation frameworks for AI assessment
+      placeholder: "Enter 3-5 specific learning objectives that align with the business scenario and target skills."
     validations:
       required: true
 
-  # Task 1 Configuration
+  # Task Configuration
   - type: markdown
     attributes:
       value: |
-        ## Task 1 Configuration
-        Configure the first task for your Interactive Scenario Lab.
+        ## Task Configuration
+        Configure the main task for your Interactive Scenario Lab.
 
   - type: dropdown
-    id: task1_type
+    id: task_type
     attributes:
-      label: Task 1 - Type
-      description: Select the educational task type for Task 1
-      options:
-        - "Multiple Choice (Single Answer) - Test factual knowledge or basic understanding"
-        - "Multiple Select (Multiple Answers) - Assess broad conceptual knowledge or multi-step solutions"
-        - "True/False (Binary Choice) - Quick check for understanding or common misconceptions"
-        - "Fill-in-the-Blank (Cloze) - Test recall of specific terms or syntax"
-        - "Matching (Pairing) - Assess recognition of relationships and concept mapping"
-        - "Ordering (Sequencing) - Test understanding of processes or workflows"
-        - "Classification (Grouping) - Check conceptual organization and categories"
-        - "Hotspot (Image Selection) - Visual interaction for applied interface knowledge"
-        - "Interactive Simulation (Configuration Adjustment) - Procedural knowledge and troubleshooting"
-    validations:
-      required: true
-
-  - type: textarea
-    id: task1_overview
-    attributes:
-      label: Task 1 - Overview
-      description: |
-        Provide a brief overview of what learners will accomplish in Task 1. 
-        
-        **Guidance**: Each task should contain 2-3 paragraphs of context and one interactive activity. Start with why (context), move to how (task), and end with what you learned (reflection). Follow the flow from the recipe-chatbot-mockups examples in C:\GitRepos\mslearn-genai-interactive\recipe-chatbot-mockups.
-      placeholder: "Example: Learners will identify the 3 most relevant user needs from 9 options for a recipe recommendation system, focusing on understanding customer pain points and business objectives."
-    validations:
-      required: true
-
-  - type: textarea
-    id: task1_content
-    attributes:
-      label: Task 1 - Content Details
-      description: |
-        Describe the specific content, interactions, and learning outcomes for Task 1.
-        
-        **Content Guidelines**: 
-        - Use visual cards or panels with colored/shaded boxes
-        - Include icons or symbols (✅ 💡 ⚙️) for actions, hints, or product tie-ins
-        - Add callout boxes for hints, definitions, or "Did you know?" moments
-        - Ensure clean typographic hierarchy (H2 for main sections, H3 for sub-actions)
-        - Implement progressive disclosure - feedback appears only after interaction
-        - Reference the HTML structure in recipe-chatbot-mockups for implementation patterns
-      placeholder: "Describe the specific options, feedback mechanisms, and learning objectives. Include any special UI elements, interaction patterns, or Microsoft product tie-ins."
-    validations:
-      required: true
-
-  # Task 2 Configuration
-  - type: markdown
-    attributes:
-      value: |
-        ## Task 2 Configuration
-        Configure the second task for your Interactive Scenario Lab.
-
-  - type: dropdown
-    id: task2_type
-    attributes:
-      label: Task 2 - Type
-      description: Select the educational task type for Task 2
+      label: Task Type
+      description: Select the educational task type for this lab
       options:
         - "Multiple Choice (Single Answer) - Test factual knowledge or basic understanding"
         - "Multiple Select (Multiple Answers) - Assess broad conceptual knowledge or multi-step solutions"
@@ -156,236 +104,25 @@ body:
       required: true
 
   - type: textarea
-    id: task2_overview
+    id: task_description
     attributes:
-      label: Task 2 - Overview
+      label: Task Description
       description: |
-        Provide a brief overview of what learners will accomplish in Task 2. 
+        Describe what learners will accomplish in this task and how it connects to the learning objectives.
         
-        **Guidance**: Each task should build conceptually toward the defined outcome. Tasks should follow the standard Microsoft Learn structure where each task advances the learner's understanding. Reference the progression shown in recipe-chatbot-mockups.
-      placeholder: "Example: Building on Task 1, learners will match user intents to appropriate system responses, developing skills in natural language understanding and response design."
+        **Guidance**: Include context, the specific activity, and expected outcomes. Reference the examples at https://madiepev.github.io/mslearn-genai-interactive/recipe-chatbot-mockups/index.html
+      placeholder: "Example: Learners will identify the 3 most relevant user needs from 9 options for the business scenario, developing skills in user-centered design and business requirement analysis."
     validations:
       required: true
 
+  # Additional Context
   - type: textarea
-    id: task2_content
+    id: additional_notes
     attributes:
-      label: Task 2 - Content Details
+      label: Additional Notes (Optional)
       description: |
-        Describe the specific content, interactions, and learning outcomes for Task 2.
-        
-        **Content Guidelines**: Focus on how this task builds upon Task 1 and advances toward the final learning objectives. Include specific interaction patterns and feedback mechanisms.
-      placeholder: "Detail the interactive elements, choices presented to learners, and how feedback will be delivered. Include any Microsoft product connections."
-    validations:
-      required: true
-
-  # Task 3 Configuration
-  - type: markdown
-    attributes:
-      value: |
-        ## Task 3 Configuration
-        Configure the third task for your Interactive Scenario Lab.
-
-  - type: dropdown
-    id: task3_type
-    attributes:
-      label: Task 3 - Type
-      description: Select the educational task type for Task 3
-      options:
-        - "Multiple Choice (Single Answer) - Test factual knowledge or basic understanding"
-        - "Multiple Select (Multiple Answers) - Assess broad conceptual knowledge or multi-step solutions"
-        - "True/False (Binary Choice) - Quick check for understanding or common misconceptions"
-        - "Fill-in-the-Blank (Cloze) - Test recall of specific terms or syntax"
-        - "Matching (Pairing) - Assess recognition of relationships and concept mapping"
-        - "Ordering (Sequencing) - Test understanding of processes or workflows"
-        - "Classification (Grouping) - Check conceptual organization and categories"
-        - "Hotspot (Image Selection) - Visual interaction for applied interface knowledge"
-        - "Interactive Simulation (Configuration Adjustment) - Procedural knowledge and troubleshooting"
-    validations:
-      required: true
-
-  - type: textarea
-    id: task3_overview
-    attributes:
-      label: Task 3 - Overview
-      description: |
-        Provide a brief overview of what learners will accomplish in Task 3.
-        
-        **Guidance**: Continue building on previous tasks. This task should advance learners toward more complex decision-making and evaluation skills.
-      placeholder: "Example: Learners will select appropriate evaluation metrics for their AI system, learning to identify key performance indicators that align with business objectives."
-    validations:
-      required: true
-
-  - type: textarea
-    id: task3_content
-    attributes:
-      label: Task 3 - Content Details
-      description: |
-        Describe the specific content, interactions, and learning outcomes for Task 3.
-        
-        **Content Guidelines**: Ensure this task logically follows the previous tasks and maintains the narrative flow of the business scenario.
-      placeholder: "Specify the interactive components, decision points, and educational feedback. Include connections to Microsoft technologies or best practices."
-    validations:
-      required: true
-
-  # Task 4 Configuration
-  - type: markdown
-    attributes:
-      value: |
-        ## Task 4 Configuration
-        Configure the fourth task for your Interactive Scenario Lab.
-
-  - type: dropdown
-    id: task4_type
-    attributes:
-      label: Task 4 - Type
-      description: Select the educational task type for Task 4
-      options:
-        - "Multiple Choice (Single Answer) - Test factual knowledge or basic understanding"
-        - "Multiple Select (Multiple Answers) - Assess broad conceptual knowledge or multi-step solutions"
-        - "True/False (Binary Choice) - Quick check for understanding or common misconceptions"
-        - "Fill-in-the-Blank (Cloze) - Test recall of specific terms or syntax"
-        - "Matching (Pairing) - Assess recognition of relationships and concept mapping"
-        - "Ordering (Sequencing) - Test understanding of processes or workflows"
-        - "Classification (Grouping) - Check conceptual organization and categories"
-        - "Hotspot (Image Selection) - Visual interaction for applied interface knowledge"
-        - "Interactive Simulation (Configuration Adjustment) - Procedural knowledge and troubleshooting"
-    validations:
-      required: true
-
-  - type: textarea
-    id: task4_overview
-    attributes:
-      label: Task 4 - Overview
-      description: |
-        Provide a brief overview of what learners will accomplish in Task 4.
-        
-        **Guidance**: This task should represent higher-order thinking and application of concepts learned in previous tasks.
-      placeholder: "Example: Learners will create a diverse test set for their AI system, applying principles of comprehensive testing and quality assurance."
-    validations:
-      required: true
-
-  - type: textarea
-    id: task4_content
-    attributes:
-      label: Task 4 - Content Details
-      description: |
-        Describe the specific content, interactions, and learning outcomes for Task 4.
-        
-        **Content Guidelines**: Focus on synthesis and application of learning from previous tasks. This should demonstrate practical skill development.
-      placeholder: "Detail how learners will apply their accumulated knowledge, what tools or interfaces they'll interact with, and what outcomes they'll achieve."
-    validations:
-      required: true
-
-  # Task 5 Configuration (conditional)
-  - type: markdown
-    attributes:
-      value: |
-        ## Task 5 Configuration (Optional)
-        Configure the fifth task if you selected 5 or 6 tasks above.
-
-  - type: dropdown
-    id: task5_type
-    attributes:
-      label: Task 5 - Type (if applicable)
-      description: Select the educational task type for Task 5 (leave blank if not using 5+ tasks)
-      options:
-        - ""
-        - "Multiple Choice (Single Answer) - Test factual knowledge or basic understanding"
-        - "Multiple Select (Multiple Answers) - Assess broad conceptual knowledge or multi-step solutions"
-        - "True/False (Binary Choice) - Quick check for understanding or common misconceptions"
-        - "Fill-in-the-Blank (Cloze) - Test recall of specific terms or syntax"
-        - "Matching (Pairing) - Assess recognition of relationships and concept mapping"
-        - "Ordering (Sequencing) - Test understanding of processes or workflows"
-        - "Classification (Grouping) - Check conceptual organization and categories"
-        - "Hotspot (Image Selection) - Visual interaction for applied interface knowledge"
-        - "Interactive Simulation (Configuration Adjustment) - Procedural knowledge and troubleshooting"
-
-  - type: textarea
-    id: task5_overview
-    attributes:
-      label: Task 5 - Overview (if applicable)
-      description: |
-        Provide a brief overview of what learners will accomplish in Task 5 (if using 5+ tasks).
-        
-        **Guidance**: This task should represent evaluation, reflection, or advanced application of all previous learning.
-      placeholder: "Example: Learners will conduct manual evaluation of AI responses using the ACRUE framework (Accurate, Complete, Relevant, Useful, Exceptional), developing critical assessment skills."
-
-  - type: textarea
-    id: task5_content
-    attributes:
-      label: Task 5 - Content Details (if applicable)
-      description: |
-        Describe the specific content, interactions, and learning outcomes for Task 5 (if using 5+ tasks).
-        
-        **Content Guidelines**: This should be the culminating task that brings together all learning objectives and provides clear connection to Microsoft products/services.
-      placeholder: "Specify the evaluation framework, scoring mechanisms, and final reflection activities. Include strong Microsoft product tie-ins."
-
-  # Task 6 Configuration (conditional)
-  - type: markdown
-    attributes:
-      value: |
-        ## Task 6 Configuration (Optional)
-        Configure the sixth task if you selected 6 tasks above.
-
-  - type: dropdown
-    id: task6_type
-    attributes:
-      label: Task 6 - Type (if applicable)
-      description: Select the educational task type for Task 6 (leave blank if not using 6 tasks)
-      options:
-        - ""
-        - "Multiple Choice (Single Answer) - Test factual knowledge or basic understanding"
-        - "Multiple Select (Multiple Answers) - Assess broad conceptual knowledge or multi-step solutions"
-        - "True/False (Binary Choice) - Quick check for understanding or common misconceptions"
-        - "Fill-in-the-Blank (Cloze) - Test recall of specific terms or syntax"
-        - "Matching (Pairing) - Assess recognition of relationships and concept mapping"
-        - "Ordering (Sequencing) - Test understanding of processes or workflows"
-        - "Classification (Grouping) - Check conceptual organization and categories"
-        - "Hotspot (Image Selection) - Visual interaction for applied interface knowledge"
-        - "Interactive Simulation (Configuration Adjustment) - Procedural knowledge and troubleshooting"
-
-  - type: textarea
-    id: task6_overview
-    attributes:
-      label: Task 6 - Overview (if applicable)
-      description: |
-        Provide a brief overview of what learners will accomplish in Task 6 (if using 6 tasks).
-        
-        **Guidance**: This final task should provide strong closure with clear Microsoft product tie-ins and real-world application opportunities.
-      placeholder: "Example: Learners will explore how their evaluation framework connects to Azure AI Foundry capabilities, identifying specific tools and features for production implementation."
-
-  - type: textarea
-    id: task6_content
-    attributes:
-      label: Task 6 - Content Details (if applicable)
-      description: |
-        Describe the specific content, interactions, and learning outcomes for Task 6 (if using 6 tasks).
-        
-        **Content Guidelines**: This should be the ultimate synthesis task with strong product tie-ins to Microsoft ecosystem tools and capabilities.
-      placeholder: "Detail the final interactive elements, product connections, and how learners will connect their scenario learning to real-world Microsoft tools and services."
-
-  # Additional Context and Requirements
-  - type: markdown
-    attributes:
-      value: |
-        ## Additional Lab Requirements
-        Provide any additional context or special requirements for this lab.
-
-  - type: textarea
-    id: additional_requirements
-    attributes:
-      label: Additional Requirements or Context
-      description: |
-        Include any special requirements, technical considerations, or additional context that would help with lab development.
-        
-        **Consider including:**
-        - Specific Microsoft products to highlight
-        - Target audience or skill level
-        - Any unique design or interaction requirements
-        - Dependencies on other learning content
-        - Accessibility considerations
-      placeholder: "e.g., This lab should specifically highlight Azure AI Foundry evaluation tools and connect to the broader AI evaluation learning path."
+        Include any additional context, requirements, or notes for lab development.
+      placeholder: "e.g., Should highlight specific Microsoft products, target particular skill level, etc."
 
   - type: checkboxes
     id: acknowledgment
@@ -393,31 +130,17 @@ body:
       label: Development Acknowledgment
       description: Please confirm understanding of the development process
       options:
-        - label: "I understand this lab will be developed as standalone HTML assets versioned in GitHub and hosted via GitHub Pages"
+        - label: "I understand this lab will be developed as standalone HTML assets and hosted via GitHub Pages"
           required: true
-        - label: "I understand the lab should be completable in 30 minutes or less with no Azure resource provisioning required"
-          required: true
-        - label: "I understand the content should follow Microsoft Learn design patterns and be mobile-friendly"
+        - label: "I understand the lab should be completable in 30 minutes or less"
           required: true
 
-  # Workflow Integration Comments
-  # The following comments explain how automated workflows will process this issue:
-  # 
-  # - lab_title: Used as the base name for generated HTML files and repository structure
-  # - use_case: Determines the fictional company context and business scenario for all tasks
-  # - num_tasks: Controls the iteration logic for task generation and HTML structure
-  # - task[N]_type: Maps to specific HTML interaction templates and JavaScript behaviors
-  # - task[N]_overview: Becomes the contextual introduction text for each task section
-  # - task[N]_content: Provides detailed specifications for interactive elements and feedback
-  # - additional_requirements: Included in developer handoff documentation
-  # 
-  # Automation will:
-  # 1. Generate initial HTML structure based on task types and count
-  # 2. Create placeholder content sections using overview and content details
-  # 3. Set up appropriate JavaScript interactions for each task type
-  # 4. Configure GitHub Pages deployment structure
-  # 5. Create corresponding issues for content development and review
-  # 
-  # Labels applied:
-  # - "new-lab": Triggers the lab creation workflow
-  # - "labs": Categories this as lab-related content for project management
+# Workflow Comments:
+# - lab_title: Used as base name for HTML files and repository structure  
+# - use_case: Determines fictional company context and business scenario
+# - learning_objectives: Defines the key skills and knowledge outcomes
+# - task_type: Maps to specific HTML interaction templates and JavaScript behaviors
+# - task_description: Becomes the main task content and instructions
+# - additional_notes: Included in developer handoff documentation
+#
+# Labels "new-lab" and "labs" will trigger automated lab creation workflow
