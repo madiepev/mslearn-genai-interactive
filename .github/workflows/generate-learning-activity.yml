@@ -1,0 +1,541 @@
+name: Generate Learning Activity
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  generate-activity:
+    if: contains(github.event.issue.labels.*.name, 'content-request') && contains(github.event.issue.labels.*.name, 'auto-generate')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Parse issue and generate HTML
+        id: generate
+        run: |
+          cat << 'EOF' > parse_issue.js
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Get issue body from environment
+          const issueBody = process.env.ISSUE_BODY;
+          
+          console.log('Processing issue...');
+          
+          // Parse the issue body
+          function parseIssueBody(body) {
+            const config = {
+              options: []
+            };
+            
+            // Extract basic information
+            config.taskTitle = extractField(body, 'Task Title:');
+            config.taskNumber = extractField(body, 'Task Number:');
+            config.taskDescription = extractField(body, 'Task Description:');
+            
+            // Extract navigation
+            config.previousTaskUrl = extractField(body, 'Previous Task URL:');
+            config.nextTaskUrl = extractField(body, 'Next Task URL:');
+            config.backToOverviewUrl = extractField(body, 'Back to Overview URL:');
+            
+            // Extract scenario context
+            config.business = extractField(body, 'Business/Organization:');
+            config.targetAudience = extractField(body, 'Target Audience:');
+            config.primaryGoal = extractField(body, 'Primary Goal:');
+            
+            // Extract activity configuration
+            config.activityType = extractField(body, 'Activity Type:');
+            config.selectionLimit = extractField(body, 'Selection Limit:');
+            config.instructions = extractField(body, 'Instructions:');
+            
+            // Extract feedback configuration
+            config.correctAnswerExplanation = extractField(body, 'Correct Answer Explanation:');
+            
+            // Parse score messages
+            const scoreSection = body.match(/\*\*Score Messages:\*\*(.*?)(?=\n\*\*|$)/s);
+            if (scoreSection) {
+              config.scoreMessages = {
+                perfect: extractScoreMessage(scoreSection[1], 'Perfect Score'),
+                good: extractScoreMessage(scoreSection[1], 'Good Score'),
+                partial: extractScoreMessage(scoreSection[1], 'Partial Score'),
+                none: extractScoreMessage(scoreSection[1], 'No Score')
+              };
+            }
+            
+            // Extract output configuration
+            config.targetDirectory = extractField(body, 'Target Directory:');
+            config.fileName = extractField(body, 'File Name:');
+            
+            // Parse options
+            const optionMatches = body.matchAll(/\*\*Option \d+:\*\*(.*?)(?=\*\*Option \d+:|\*\*\*|### Feedback Configuration|$)/gs);
+            
+            for (const match of optionMatches) {
+              const optionText = match[1];
+              const option = {
+                title: extractOptionField(optionText, 'Title:'),
+                description: extractOptionField(optionText, 'Description:'),
+                id: extractOptionField(optionText, 'ID:'),
+                correct: extractOptionField(optionText, 'Correct:').toLowerCase() === 'yes'
+              };
+              config.options.push(option);
+            }
+            
+            return config;
+          }
+          
+          function extractField(text, fieldName) {
+            const regex = new RegExp(`\\*\\*${fieldName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\*\\*\\s*([^\\n]*(?:\\n(?!\\*\\*)[^\\n]*)*)`, 'i');
+            const match = text.match(regex);
+            return match ? match[1].trim() : '';
+          }
+          
+          function extractOptionField(text, fieldName) {
+            const regex = new RegExp(`- \\*\\*${fieldName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\*\\*\\s*([^\\n]+)`, 'i');
+            const match = text.match(regex);
+            return match ? match[1].trim() : '';
+          }
+          
+          function extractScoreMessage(text, scoreType) {
+            const regex = new RegExp(`- \\*\\*${scoreType.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}[^:]*:\\*\\*\\s*([^\\n]+)`, 'i');
+            const match = text.match(regex);
+            return match ? match[1].trim() : '';
+          }
+          
+          // Generate HTML template
+          function generateHTML(config) {
+            const optionCards = config.options.map(option => `
+              <div class="need-card" data-need="${option.id}" onclick="toggleNeed('${option.id}')">
+                  <div class="need-title">${option.title}</div>
+                  <div class="need-description">${option.description}</div>
+              </div>`).join('\\n        ');
+          
+            const correctAnswers = config.options.filter(opt => opt.correct).map(opt => opt.id);
+            const correctAnswersArray = '[' + correctAnswers.map(id => `'${id}'`).join(', ') + ']';
+            
+            const needTitlesObj = config.options.reduce((acc, opt) => {
+              acc[opt.id] = opt.title;
+              return acc;
+            }, {});
+            
+            const needTitlesJson = JSON.stringify(needTitlesObj, null, 16).replace(/^/gm, '                ');
+          
+            return `<!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>${config.taskTitle} - Interactive Learning Activity</title>
+              <style>
+                  body {
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+                      max-width: 900px;
+                      margin: 0 auto;
+                      padding: 20px;
+                      line-height: 1.6;
+                      color: #333;
+                  }
+                  .navigation {
+                      background: #f6f8fa;
+                      padding: 15px;
+                      border-radius: 6px;
+                      margin-bottom: 20px;
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                  }
+                  .nav-link {
+                      color: #0969da;
+                      text-decoration: none;
+                      font-weight: 500;
+                  }
+                  .nav-link:hover {
+                      text-decoration: underline;
+                  }
+                  .header {
+                      border-bottom: 1px solid #e0e0e0;
+                      margin-bottom: 30px;
+                      padding-bottom: 20px;
+                  }
+                  .task-info {
+                      background: #fff3cd;
+                      border: 1px solid #ffeaa7;
+                      border-radius: 6px;
+                      padding: 20px;
+                      margin: 20px 0;
+                  }
+                  .needs-grid {
+                      display: grid;
+                      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                      gap: 15px;
+                      margin: 30px 0;
+                  }
+                  .need-card {
+                      border: 2px solid #d0d7de;
+                      border-radius: 6px;
+                      padding: 18px;
+                      background: white;
+                      cursor: pointer;
+                      transition: all 0.2s;
+                  }
+                  .need-card:hover {
+                      border-color: #0969da;
+                      background: #f0f9ff;
+                  }
+                  .need-card.selected {
+                      border-color: #0969da;
+                      background: #dbeafe;
+                      box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+                  }
+                  .need-title {
+                      font-weight: 600;
+                      font-size: 16px;
+                      margin-bottom: 8px;
+                      color: #1f2937;
+                  }
+                  .need-description {
+                      font-size: 14px;
+                      color: #6b7280;
+                  }
+                  .selection-summary {
+                      background: #fff;
+                      border: 1px solid #0969da;
+                      border-radius: 6px;
+                      padding: 20px;
+                      margin: 30px 0;
+                      text-align: center;
+                  }
+                  .selected-count {
+                      font-size: 18px;
+                      font-weight: 600;
+                      color: #0969da;
+                      margin-bottom: 15px;
+                  }
+                  .submit-btn {
+                      background: #0969da;
+                      color: white;
+                      border: none;
+                      padding: 15px 30px;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      font-size: 16px;
+                      font-weight: 500;
+                  }
+                  .submit-btn:disabled {
+                      background: #6b7280;
+                      cursor: not-allowed;
+                  }
+                  .feedback {
+                      background: #f8f9fa;
+                      border: 1px solid #d0d7de;
+                      border-radius: 6px;
+                      padding: 20px;
+                      margin: 20px 0;
+                      display: none;
+                  }
+                  .feedback.show {
+                      display: block;
+                  }
+                  .score-section {
+                      background: #e6f3ff;
+                      border: 1px solid #0969da;
+                      border-radius: 6px;
+                      padding: 15px;
+                      margin: 15px 0;
+                      text-align: center;
+                      font-size: 18px;
+                      font-weight: 600;
+                  }
+                  .correct-section {
+                      background: #d1fae5;
+                      border-left: 4px solid #16a34a;
+                      padding: 15px;
+                      margin: 15px 0;
+                  }
+                  .incorrect-section {
+                      background: #fee2e2;
+                      border-left: 4px solid #dc2626;
+                      padding: 15px;
+                      margin: 15px 0;
+                  }
+                  .missed-section {
+                      background: #fef3c7;
+                      border-left: 4px solid #d97706;
+                      padding: 15px;
+                      margin: 15px 0;
+                  }
+                  .overall-feedback {
+                      background: #f0f9ff;
+                      border: 1px solid #0369a1;
+                      border-radius: 6px;
+                      padding: 15px;
+                      margin: 15px 0;
+                  }
+                  .next-task {
+                      background: #0969da;
+                      color: white;
+                      padding: 12px 24px;
+                      border-radius: 6px;
+                      text-decoration: none;
+                      display: inline-block;
+                      margin-top: 20px;
+                      font-weight: 500;
+                  }
+                  .reset-section {
+                      text-align: center;
+                      margin: 30px 0;
+                      padding: 20px;
+                      border-top: 1px solid #e0e0e0;
+                  }
+                  .reset-btn {
+                      background: #6b7280;
+                      color: white;
+                      border: none;
+                      padding: 10px 20px;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      font-size: 14px;
+                      font-weight: 500;
+                      transition: background-color 0.2s;
+                  }
+                  .reset-btn:hover {
+                      background: #4b5563;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="navigation">
+                  ${config.backToOverviewUrl ? `<a href="${config.backToOverviewUrl}" class="nav-link">← Back to Overview</a>` : '<span></span>'}
+                  ${config.taskNumber ? `<span>Task ${config.taskNumber}</span>` : '<span></span>'}
+                  ${config.nextTaskUrl ? `<a href="${config.nextTaskUrl}" class="nav-link">Next Task →</a>` : '<span></span>'}
+              </div>
+          
+              <div class="header">
+                  <h1>${config.taskTitle}</h1>
+                  <p>${config.instructions}</p>
+              </div>
+          
+              <div class="task-info">
+                  <h3>Scenario Context</h3>
+                  ${config.business ? `<p><strong>Business/Organization:</strong> ${config.business}</p>` : ''}
+                  ${config.targetAudience ? `<p><strong>Target Audience:</strong> ${config.targetAudience}</p>` : ''}
+                  ${config.primaryGoal ? `<p><strong>Primary Goal:</strong> ${config.primaryGoal}</p>` : ''}
+              </div>
+          
+              <div class="needs-grid">
+                  ${optionCards}
+              </div>
+          
+              <div class="selection-summary">
+                  <div class="selected-count" id="selectedCount">0 of ${config.selectionLimit} selected</div>
+                  <p>Choose exactly ${config.selectionLimit} options</p>
+                  <button class="submit-btn" id="submitBtn" onclick="submitSelection()" disabled>Submit Selection</button>
+              </div>
+          
+              <div class="feedback" id="feedback">
+                  <!-- Dynamic feedback will be inserted here -->
+              </div>
+          
+              <div class="reset-section">
+                  <button class="reset-btn" onclick="location.reload()">Reset Exercise</button>
+              </div>
+          
+              <script>
+                  let selectedNeeds = new Set();
+                  const maxSelections = ${config.selectionLimit};
+                  const correctAnswers = new Set(${correctAnswersArray});
+                  
+                  const needTitles = ${needTitlesJson};
+                  
+                  const scoreMessages = {
+                      perfect: "${config.scoreMessages?.perfect || 'Excellent! You got all answers correct.'}",
+                      good: "${config.scoreMessages?.good || 'Good work! You got most answers correct.'}",
+                      partial: "${config.scoreMessages?.partial || 'Keep learning! You got some answers correct.'}",
+                      none: "${config.scoreMessages?.none || 'Review needed. Focus on the key concepts.'}"
+                  };
+          
+                  function toggleNeed(needId) {
+                      const card = document.querySelector(\`[data-need="\${needId}"]\`);
+                      
+                      if (selectedNeeds.has(needId)) {
+                          selectedNeeds.delete(needId);
+                          card.classList.remove('selected');
+                      } else {
+                          if (selectedNeeds.size < maxSelections) {
+                              selectedNeeds.add(needId);
+                              card.classList.add('selected');
+                          } else {
+                              alert(\`You can only select \${maxSelections} options. Please deselect one first.\`);
+                              return;
+                          }
+                      }
+                      
+                      updateSelectionCount();
+                  }
+          
+                  function updateSelectionCount() {
+                      const count = selectedNeeds.size;
+                      document.getElementById('selectedCount').textContent = \`\${count} of \${maxSelections} selected\`;
+                      document.getElementById('submitBtn').disabled = count !== maxSelections;
+                  }
+          
+                  function submitSelection() {
+                      if (selectedNeeds.size !== maxSelections) {
+                          alert(\`Please select exactly \${maxSelections} options.\`);
+                          return;
+                      }
+                      
+                      generatePersonalizedFeedback();
+                      document.getElementById('feedback').classList.add('show');
+                      document.querySelector('.selection-summary').style.display = 'none';
+                  }
+          
+                  function generatePersonalizedFeedback() {
+                      const selectedArray = Array.from(selectedNeeds);
+                      const correctSelections = selectedArray.filter(need => correctAnswers.has(need));
+                      const incorrectSelections = selectedArray.filter(need => !correctAnswers.has(need));
+                      const missedCorrect = Array.from(correctAnswers).filter(need => !selectedNeeds.has(need));
+                      
+                      let feedbackHTML = '<h3>Your Selection Feedback</h3>';
+                      
+                      // Score calculation
+                      const score = correctSelections.length;
+                      const maxScore = correctAnswers.size;
+                      feedbackHTML += \`<div class="score-section"><h4>Score: \${score}/\${maxScore} correct</h4></div>\`;
+                      
+                      // Correct selections feedback
+                      if (correctSelections.length > 0) {
+                          feedbackHTML += '<div class="correct-section"><h4>Correct Selections:</h4><ul>';
+                          correctSelections.forEach(need => {
+                              feedbackHTML += \`<li><strong>\${needTitles[need]}</strong></li>\`;
+                          });
+                          feedbackHTML += '</ul></div>';
+                      }
+                      
+                      // Incorrect selections feedback
+                      if (incorrectSelections.length > 0) {
+                          feedbackHTML += '<div class="incorrect-section"><h4>Incorrect Selections:</h4><ul>';
+                          incorrectSelections.forEach(need => {
+                              feedbackHTML += \`<li><strong>\${needTitles[need]}</strong></li>\`;
+                          });
+                          feedbackHTML += '</ul></div>';
+                      }
+                      
+                      // Missed correct answers
+                      if (missedCorrect.length > 0) {
+                          feedbackHTML += '<div class="missed-section"><h4>You Missed:</h4><ul>';
+                          missedCorrect.forEach(need => {
+                              feedbackHTML += \`<li><strong>\${needTitles[need]}</strong></li>\`;
+                          });
+                          feedbackHTML += '</ul></div>';
+                      }
+                      
+                      // Overall feedback based on score
+                      const scoreRatio = score / maxScore;
+                      let overallMessage;
+                      if (scoreRatio === 1) {
+                          overallMessage = scoreMessages.perfect;
+                      } else if (scoreRatio >= 0.67) {
+                          overallMessage = scoreMessages.good;
+                      } else if (scoreRatio >= 0.33) {
+                          overallMessage = scoreMessages.partial;
+                      } else {
+                          overallMessage = scoreMessages.none;
+                      }
+                      
+                      feedbackHTML += \`<div class="overall-feedback"><p><strong>\${overallMessage}</strong></p></div>\`;
+                      
+                      ${config.nextTaskUrl ? `feedbackHTML += '<a href="${config.nextTaskUrl}" class="next-task">Continue to Next Task</a>';` : ''}
+                      
+                      document.getElementById('feedback').innerHTML = feedbackHTML;
+                  }
+              </script>
+          </body>
+          </html>`;
+          }
+          
+          // Parse and generate
+          const config = parseIssueBody(issueBody);
+          const html = generateHTML(config);
+          
+          // Write to file
+          const outputDir = config.targetDirectory || 'generated-activities';
+          const fileName = config.fileName || 'index.html';
+          const fullPath = path.join(outputDir, fileName);
+          
+          // Ensure directory exists
+          fs.mkdirSync(outputDir, { recursive: true });
+          
+          // Write HTML file
+          fs.writeFileSync(fullPath, html);
+          
+          console.log(\`Generated HTML file: \${fullPath}\`);
+          console.log(\`Task: \${config.taskTitle}\`);
+          console.log(\`Options: \${config.options.length}\`);
+          
+          // Set outputs
+          console.log(\`::set-output name=file_path::\${fullPath}\`);
+          console.log(\`::set-output name=task_title::\${config.taskTitle}\`);
+          EOF
+          
+          node parse_issue.js
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          
+      - name: Commit and push generated file
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Generated learning activity: ${{ steps.generate.outputs.task_title }}" || exit 0
+          git push
+          
+      - name: Comment on issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🎉 **Learning Activity Generated Successfully!**
+              
+              Your interactive learning activity has been created and committed to the repository.
+              
+              **File Location:** \`${{ steps.generate.outputs.file_path }}\`
+              **Task Title:** ${{ steps.generate.outputs.task_title }}
+              
+              You can now:
+              - View the generated HTML file in the repository
+              - Test the interactive functionality
+              - Make any manual adjustments if needed
+              
+              The activity includes:
+              - Interactive selection interface
+              - Personalized feedback system
+              - Navigation between tasks
+              - Responsive design
+              
+              This issue will be automatically closed.`
+            });
+            
+      - name: Close issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed',
+              labels: ['completed', 'auto-generated']
+            });
