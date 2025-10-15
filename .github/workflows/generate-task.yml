@@ -130,8 +130,15 @@ jobs:
             const solutionGoal = extractField(issueBody, 'Solution Goal') || 'Demonstrate the task generation system';
             const nextTaskTitle = extractField(issueBody, 'Next Task Title') || 'Next Task';
             
+            // Extract all 9 options
+            const options = {};
+            for (let i = 1; i <= 9; i++) {
+              options[`option${i}_title`] = extractField(issueBody, `Option ${i} Title`) || `Option ${i} Title`;
+              options[`option${i}_desc`] = extractField(issueBody, `Option ${i} Description`) || `Description for option ${i}`;
+            }
+            
             console.log('Parsed fields:', {
-              folderName, fileName, taskTitle, companyName, customerBase, solutionGoal
+              folderName, fileName, taskTitle, companyName, customerBase, solutionGoal, options
             });
             
             // Create the folder structure: tasks/folder-name/
@@ -154,25 +161,14 @@ jobs:
               .replace(/\{\{customer_base\}\}/g, customerBase)
               .replace(/\{\{solution_goal\}\}/g, solutionGoal)
               .replace(/\{\{instructions\}\}/g, instructions)
-              .replace(/\{\{next_task_title\}\}/g, nextTaskTitle)
-              .replace(/\{\{option1_title\}\}/g, 'Option 1 Title')
-              .replace(/\{\{option1_desc\}\}/g, 'Description for option 1')
-              .replace(/\{\{option2_title\}\}/g, 'Option 2 Title')
-              .replace(/\{\{option2_desc\}\}/g, 'Description for option 2')
-              .replace(/\{\{option3_title\}\}/g, 'Option 3 Title')
-              .replace(/\{\{option3_desc\}\}/g, 'Description for option 3')
-              .replace(/\{\{option4_title\}\}/g, 'Option 4 Title')
-              .replace(/\{\{option4_desc\}\}/g, 'Description for option 4')
-              .replace(/\{\{option5_title\}\}/g, 'Option 5 Title')
-              .replace(/\{\{option5_desc\}\}/g, 'Description for option 5')
-              .replace(/\{\{option6_title\}\}/g, 'Option 6 Title')
-              .replace(/\{\{option6_desc\}\}/g, 'Description for option 6')
-              .replace(/\{\{option7_title\}\}/g, 'Option 7 Title')
-              .replace(/\{\{option7_desc\}\}/g, 'Description for option 7')
-              .replace(/\{\{option8_title\}\}/g, 'Option 8 Title')
-              .replace(/\{\{option8_desc\}\}/g, 'Description for option 8')
-              .replace(/\{\{option9_title\}\}/g, 'Option 9 Title')
-              .replace(/\{\{option9_desc\}\}/g, 'Description for option 9');
+              .replace(/\{\{next_task_title\}\}/g, nextTaskTitle);
+            
+            // Replace all option placeholders with extracted data
+            for (let i = 1; i <= 9; i++) {
+              templateContent = templateContent
+                .replace(new RegExp(`\\{\\{option${i}_title\\}\\}`, 'g'), options[`option${i}_title`])
+                .replace(new RegExp(`\\{\\{option${i}_desc\\}\\}`, 'g'), options[`option${i}_desc`]);
+            }
             
             // Write the generated file
             const fullPath = path.join(outputDir, outputFile);
