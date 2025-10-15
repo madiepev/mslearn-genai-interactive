@@ -54,7 +54,7 @@ jobs:
           echo "Issue number: ${{ github.event.issue.number }}"
           echo "Issue labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
 
-      - name: Comment on issue with debug info
+      - name: Comment with file location
         if: steps.check.outputs.skip != 'true'
         uses: actions/github-script@v7
         with:
@@ -89,6 +89,117 @@ jobs:
               body: comment
             });
 
+      - name: Parse issue data and generate file
+        if: steps.check.outputs.skip != 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Parse issue body to extract form data
+            const issueBody = context.payload.issue.body;
+            console.log('Issue body:', issueBody);
+            
+            // Function to extract field values from GitHub issue form
+            function extractField(body, fieldLabel) {
+              const patterns = [
+                new RegExp(`### ${fieldLabel}\\s*\\n\\s*([^\\n#]+)`, 'i'),
+                new RegExp(`\\*\\*${fieldLabel}\\*\\*:?\\s*([^\\n]+)`, 'i')
+              ];
+              
+              for (const pattern of patterns) {
+                const match = body.match(pattern);
+                if (match && match[1] && match[1].trim() !== '_No response_') {
+                  return match[1].trim();
+                }
+              }
+              return '';
+            }
+            
+            // Extract all relevant fields from the issue
+            const title = context.payload.issue.title.replace(/^\[NEW_TASK\]\s*/, '').trim();
+            const folderName = extractField(issueBody, 'Task Folder Name') || 'new-task-folder';
+            const fileName = extractField(issueBody, 'Output File Name') || 'index';
+            
+            // Extract content fields
+            const taskTitle = extractField(issueBody, 'Task Title') || title;
+            const instructions = extractField(issueBody, 'Task Instructions') || 'Select the 3 most relevant options from the 9 choices below that best address the task requirements. Submit your selection to receive immediate feedback.';
+            const companyName = extractField(issueBody, 'Company/Business Name') || 'Sample Company - Demo business for testing';
+            const customerBase = extractField(issueBody, 'Customer Base') || 'Demo customers and users';
+            const solutionGoal = extractField(issueBody, 'Solution Goal') || 'Demonstrate the task generation system';
+            const nextTaskTitle = extractField(issueBody, 'Next Task Title') || 'Next Task';
+            
+            console.log('Parsed fields:', {
+              folderName, fileName, taskTitle, companyName, customerBase, solutionGoal
+            });
+            
+            // Create the folder structure: tasks/folder-name/
+            const outputDir = `tasks/${folderName}`;
+            const outputFile = `${fileName}.html`;
+            
+            // Create directory if it doesn't exist
+            if (!fs.existsSync(outputDir)) {
+              fs.mkdirSync(outputDir, { recursive: true });
+            }
+            
+            // Read template
+            const templatePath = 'docs/template-task.html';
+            let templateContent = fs.readFileSync(templatePath, 'utf8');
+            
+            // Replace template placeholders with extracted data
+            templateContent = templateContent
+              .replace(/\{\{task_title\}\}/g, taskTitle)
+              .replace(/\{\{company_name\}\}/g, companyName)
+              .replace(/\{\{customer_base\}\}/g, customerBase)
+              .replace(/\{\{solution_goal\}\}/g, solutionGoal)
+              .replace(/\{\{instructions\}\}/g, instructions)
+              .replace(/\{\{next_task_title\}\}/g, nextTaskTitle)
+              .replace(/\{\{option1_title\}\}/g, 'Option 1 Title')
+              .replace(/\{\{option1_desc\}\}/g, 'Description for option 1')
+              .replace(/\{\{option2_title\}\}/g, 'Option 2 Title')
+              .replace(/\{\{option2_desc\}\}/g, 'Description for option 2')
+              .replace(/\{\{option3_title\}\}/g, 'Option 3 Title')
+              .replace(/\{\{option3_desc\}\}/g, 'Description for option 3')
+              .replace(/\{\{option4_title\}\}/g, 'Option 4 Title')
+              .replace(/\{\{option4_desc\}\}/g, 'Description for option 4')
+              .replace(/\{\{option5_title\}\}/g, 'Option 5 Title')
+              .replace(/\{\{option5_desc\}\}/g, 'Description for option 5')
+              .replace(/\{\{option6_title\}\}/g, 'Option 6 Title')
+              .replace(/\{\{option6_desc\}\}/g, 'Description for option 6')
+              .replace(/\{\{option7_title\}\}/g, 'Option 7 Title')
+              .replace(/\{\{option7_desc\}\}/g, 'Description for option 7')
+              .replace(/\{\{option8_title\}\}/g, 'Option 8 Title')
+              .replace(/\{\{option8_desc\}\}/g, 'Description for option 8')
+              .replace(/\{\{option9_title\}\}/g, 'Option 9 Title')
+              .replace(/\{\{option9_desc\}\}/g, 'Description for option 9');
+            
+            // Write the generated file
+            const fullPath = path.join(outputDir, outputFile);
+            fs.writeFileSync(fullPath, templateContent);
+            
+            console.log(`Generated file: ${fullPath}`);
+            
+            return {
+              fileName: outputFile,
+              filePath: fullPath,
+              folderName: folderName,
+              outputDir: outputDir
+            };
+
+      - name: Commit generated file
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add tasks/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Generate new task: ${{ github.event.issue.title }}"
+            git push
+          fi
+
       - name: Add completion label
         if: steps.check.outputs.skip != 'true'
         uses: actions/github-script@v7
@@ -98,7 +209,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: ['action-tested']
+              labels: ['action-completed']
             });
 
       - name: Comment on skipped issues

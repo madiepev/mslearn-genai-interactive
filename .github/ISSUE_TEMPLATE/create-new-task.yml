@@ -287,11 +287,21 @@ body:
       required: false
 
   - type: input
+    id: folder_name
+    attributes:
+      label: Task Folder Name
+      description: Name for the folder where this task will be created (inside the tasks/ directory)
+      placeholder: "task-1-user-needs"
+    validations:
+      required: true
+
+  - type: input
     id: file_name
     attributes:
       label: Output File Name
       description: Name for the generated HTML file (without .html extension)
-      placeholder: "task-1-business-process-optimization"
+      placeholder: "index"
+      value: "index"
     validations:
       required: true
 
