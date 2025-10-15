@@ -1,0 +1,190 @@
+name: Generate New Task from Template
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  generate-task:
+    if: contains(github.event.issue.labels.*.name, 'task-generation')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Parse issue body
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueBody = context.payload.issue.body;
+            
+            // Function to extract value from issue body
+            function extractValue(body, fieldName) {
+              const regex = new RegExp(`### ${fieldName}\\s*\\n\\s*([^\\n]+)`, 'i');
+              const match = body.match(regex);
+              return match ? match[1].trim() : '';
+            }
+            
+            // Function to extract textarea value
+            function extractTextareaValue(body, fieldName) {
+              const startPattern = new RegExp(`### ${fieldName}\\s*\\n`, 'i');
+              const startMatch = body.match(startPattern);
+              if (!startMatch) return '';
+              
+              const startIndex = startMatch.index + startMatch[0].length;
+              const nextFieldPattern = /\n### /;
+              const nextFieldMatch = body.slice(startIndex).match(nextFieldPattern);
+              const endIndex = nextFieldMatch ? startIndex + nextFieldMatch.index : body.length;
+              
+              return body.slice(startIndex, endIndex).trim();
+            }
+            
+            // Parse all fields from the issue body
+            const fields = {};
+            
+            // Parse simple input fields
+            const inputFields = [
+              'task_title', 'company_name', 'customer_base', 'solution_goal', 
+              'next_task_title', 'correct_answers', 'file_name',
+              'option1_title', 'option2_title', 'option3_title', 'option4_title', 
+              'option5_title', 'option6_title', 'option7_title', 'option8_title', 'option9_title'
+            ];
+            
+            const textareaFields = [
+              'instructions', 'feedback_explanations',
+              'option1_desc', 'option2_desc', 'option3_desc', 'option4_desc',
+              'option5_desc', 'option6_desc', 'option7_desc', 'option8_desc', 'option9_desc'
+            ];
+            
+            // Extract input fields
+            inputFields.forEach(field => {
+              fields[field] = extractValue(issueBody, field) || extractValue(issueBody, field.replace('_', ' '));
+            });
+            
+            // Extract textarea fields
+            textareaFields.forEach(field => {
+              fields[field] = extractTextareaValue(issueBody, field) || extractTextareaValue(issueBody, field.replace('_', ' '));
+            });
+            
+            // Set outputs
+            Object.keys(fields).forEach(key => {
+              core.setOutput(key, fields[key]);
+            });
+            
+            // Debug output
+            console.log('Parsed fields:', fields);
+            
+            return fields;
+
+      - name: Generate task file
+        id: generate
+        run: |
+          # Read the template file
+          template_content=$(cat docs/template-task.html)
+          
+          # Replace all placeholders
+          output_content="$template_content"
+          
+          # Replace basic placeholders
+          output_content="${output_content//\{\{task_title\}\}/${{ steps.parse.outputs.task_title }}}"
+          output_content="${output_content//\{\{instructions\}\}/${{ steps.parse.outputs.instructions }}}"
+          output_content="${output_content//\{\{company_name\}\}/${{ steps.parse.outputs.company_name }}}"
+          output_content="${output_content//\{\{customer_base\}\}/${{ steps.parse.outputs.customer_base }}}"
+          output_content="${output_content//\{\{solution_goal\}\}/${{ steps.parse.outputs.solution_goal }}}"
+          output_content="${output_content//\{\{next_task_title\}\}/${{ steps.parse.outputs.next_task_title }}}"
+          
+          # Replace option placeholders
+          for i in {1..9}; do
+            title_var="option${i}_title"
+            desc_var="option${i}_desc"
+            title_value=$(echo "${{ steps.parse.outputs[title_var] }}" | sed 's/"/\\"/g')
+            desc_value=$(echo "${{ steps.parse.outputs[desc_var] }}" | sed 's/"/\\"/g')
+            
+            output_content="${output_content//\{\{option${i}_title\}\}/$title_value}"
+            output_content="${output_content//\{\{option${i}_desc\}\}/$desc_value}"
+          done
+          
+          # Create output directory if it doesn't exist
+          mkdir -p generated-tasks
+          
+          # Write the generated file
+          echo "$output_content" > "generated-tasks/${{ steps.parse.outputs.file_name }}.html"
+          
+          echo "Generated file: generated-tasks/${{ steps.parse.outputs.file_name }}.html"
+
+      - name: Update JavaScript configuration
+        run: |
+          # Parse correct answers
+          correct_answers="${{ steps.parse.outputs.correct_answers }}"
+          
+          # Convert to JavaScript array format
+          js_array=$(echo "$correct_answers" | sed 's/,/", "option/g' | sed 's/^/"option/' | sed 's/$/"/')
+          
+          # Update the JavaScript in the generated file
+          sed -i "s/const correctAnswers = new Set(\['option1', 'option5', 'option6'\]);/const correctAnswers = new Set([$js_array]);/" "generated-tasks/${{ steps.parse.outputs.file_name }}.html"
+          
+          echo "Updated JavaScript configuration with correct answers: $correct_answers"
+
+      - name: Commit generated file
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add generated-tasks/
+          git commit -m "Generate new task: ${{ steps.parse.outputs.file_name }}" || exit 0
+          git push
+
+      - name: Comment on issue with result
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fileName = '${{ steps.parse.outputs.file_name }}';
+            const fileUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/blob/${context.ref}/generated-tasks/${fileName}.html`;
+            
+            const comment = `
+            ## ✅ Task Generated Successfully!
+            
+            Your new Task 1 page has been generated and committed to the repository.
+            
+            **Generated File**: \`generated-tasks/${fileName}.html\`
+            
+            **📋 Configuration Summary:**
+            - **Task Title**: ${{ steps.parse.outputs.task_title }}
+            - **Company**: ${{ steps.parse.outputs.company_name }}
+            - **Customer Base**: ${{ steps.parse.outputs.customer_base }}
+            - **Solution Goal**: ${{ steps.parse.outputs.solution_goal }}
+            - **Correct Answers**: Options ${{ steps.parse.outputs.correct_answers }}
+            
+            **🔗 View Generated File**: [${fileName}.html](${fileUrl})
+            
+            **Next Steps:**
+            1. Review the generated file to ensure it meets your requirements
+            2. Test the interactive functionality 
+            3. Move the file to your desired location in the repository
+            4. Update any additional JavaScript customizations if needed
+            
+            ---
+            *This task was automatically generated from the template. If you need modifications, please open a new issue or edit the file directly.*
+            `;
+            
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Close issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed',
+              labels: ['task-generation', 'completed']
+            });

@@ -1,0 +1,317 @@
+name: 🎯 Create New Task 1 Page
+description: Generate a new Task 1 page based on the template with your custom content
+title: "[New Task]: "
+labels: ["task-generation", "content"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Create a New Task 1 Page
+        
+        Fill out the form below to automatically generate a new Task 1 page based on the template. All fields are required unless marked as optional.
+        
+        **Note**: After submitting this issue, a GitHub Action will automatically create a new HTML file with your content and post the result as a comment.
+
+  - type: input
+    id: task_title
+    attributes:
+      label: Task Title
+      description: The specific task title (e.g., "Identify User Needs", "Analyze Requirements")
+      placeholder: "Identify User Needs"
+    validations:
+      required: true
+
+  - type: textarea
+    id: instructions
+    attributes:
+      label: Task Instructions
+      description: Instructions for users on what to do in this task
+      placeholder: "Select the 3 most relevant options from the 9 choices below that best address the task requirements. Submit your selection to receive immediate feedback."
+      value: "Select the 3 most relevant options from the 9 choices below that best address the task requirements. Submit your selection to receive immediate feedback."
+    validations:
+      required: true
+
+  - type: input
+    id: company_name
+    attributes:
+      label: Company/Business Name
+      description: Name and description of the company or business
+      placeholder: "TechFlow Solutions - a software consulting firm specializing in digital transformation"
+    validations:
+      required: true
+
+  - type: input
+    id: customer_base
+    attributes:
+      label: Customer Base
+      description: Description of the target audience or users
+      placeholder: "Small to medium businesses, startup founders, and enterprise teams"
+    validations:
+      required: true
+
+  - type: input
+    id: solution_goal
+    attributes:
+      label: Solution Goal
+      description: Primary goal or outcome of the solution
+      placeholder: "Streamline business processes and improve operational efficiency"
+    validations:
+      required: true
+
+  - type: input
+    id: next_task_title
+    attributes:
+      label: Next Task Title
+      description: Title for the next task in the navigation
+      placeholder: "Intent Matching"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Option 1
+
+  - type: input
+    id: option1_title
+    attributes:
+      label: Option 1 Title
+      placeholder: "Process Automation"
+    validations:
+      required: true
+
+  - type: textarea
+    id: option1_desc
+    attributes:
+      label: Option 1 Description
+      placeholder: "Automate repetitive tasks and workflows to reduce manual effort"
+      rows: 2
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Option 2
+
+  - type: input
+    id: option2_title
+    attributes:
+      label: Option 2 Title
+      placeholder: "Data Analytics"
+    validations:
+      required: true
+
+  - type: textarea
+    id: option2_desc
+    attributes:
+      label: Option 2 Description
+      placeholder: "Analyze business data to identify trends and insights"
+      rows: 2
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Option 3
+
+  - type: input
+    id: option3_title
+    attributes:
+      label: Option 3 Title
+      placeholder: "User Experience Design"
+    validations:
+      required: true
+
+  - type: textarea
+    id: option3_desc
+    attributes:
+      label: Option 3 Description
+      placeholder: "Design intuitive interfaces that improve user satisfaction"
+      rows: 2
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Option 4
+
+  - type: input
+    id: option4_title
+    attributes:
+      label: Option 4 Title
+      placeholder: "Integration Services"
+    validations:
+      required: true
+
+  - type: textarea
+    id: option4_desc
+    attributes:
+      label: Option 4 Description
+      placeholder: "Connect different systems and applications seamlessly"
+      rows: 2
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Option 5
+
+  - type: input
+    id: option5_title
+    attributes:
+      label: Option 5 Title
+      placeholder: "Security Implementation"
+    validations:
+      required: true
+
+  - type: textarea
+    id: option5_desc
+    attributes:
+      label: Option 5 Description
+      placeholder: "Implement robust security measures to protect business data"
+      rows: 2
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Option 6
+
+  - type: input
+    id: option6_title
+    attributes:
+      label: Option 6 Title
+      placeholder: "Performance Optimization"
+    validations:
+      required: true
+
+  - type: textarea
+    id: option6_desc
+    attributes:
+      label: Option 6 Description
+      placeholder: "Optimize system performance and response times"
+      rows: 2
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Option 7
+
+  - type: input
+    id: option7_title
+    attributes:
+      label: Option 7 Title
+      placeholder: "Training & Support"
+    validations:
+      required: true
+
+  - type: textarea
+    id: option7_desc
+    attributes:
+      label: Option 7 Description
+      placeholder: "Provide comprehensive training and ongoing support"
+      rows: 2
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Option 8
+
+  - type: input
+    id: option8_title
+    attributes:
+      label: Option 8 Title
+      placeholder: "Cloud Migration"
+    validations:
+      required: true
+
+  - type: textarea
+    id: option8_desc
+    attributes:
+      label: Option 8 Description
+      placeholder: "Migrate applications and data to cloud platforms"
+      rows: 2
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Option 9
+
+  - type: input
+    id: option9_title
+    attributes:
+      label: Option 9 Title
+      placeholder: "Quality Assurance"
+    validations:
+      required: true
+
+  - type: textarea
+    id: option9_desc
+    attributes:
+      label: Option 9 Description
+      placeholder: "Ensure software quality through comprehensive testing"
+      rows: 2
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### Correct Answers Configuration
+        
+        **Important**: You'll need to specify which options are the correct answers (1-9) and provide explanations for the feedback system.
+
+  - type: input
+    id: correct_answers
+    attributes:
+      label: Correct Answer IDs
+      description: Comma-separated list of correct option numbers (e.g., "1,5,6")
+      placeholder: "1,5,6"
+    validations:
+      required: true
+
+  - type: textarea
+    id: feedback_explanations
+    attributes:
+      label: Feedback Explanations (Optional)
+      description: |
+        Optional: Provide custom explanations for correct/incorrect answers. 
+        Format: "option1: explanation text | option2: explanation text"
+        If not provided, generic explanations will be used.
+      placeholder: "option1: This is essential because... | option5: This addresses the core need for..."
+      rows: 4
+    validations:
+      required: false
+
+  - type: input
+    id: file_name
+    attributes:
+      label: Output File Name
+      description: Name for the generated HTML file (without .html extension)
+      placeholder: "task-1-business-process-optimization"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confirmation
+      description: Please confirm you understand the following
+      options:
+        - label: I understand that a new HTML file will be generated based on this information
+          required: true
+        - label: I have provided accurate information for all required fields
+          required: true
