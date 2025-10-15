@@ -1,6 +1,6 @@
 name: 🎯 Create New Task 1 Page
 description: Generate a new Task 1 page based on the template with your custom content
-title: "[New Task]: "
+title: "[NEW_TASK] "
 labels: ["task-generation", "content"]
 assignees: []
 

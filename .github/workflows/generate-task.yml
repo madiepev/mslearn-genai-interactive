@@ -6,7 +6,8 @@ on:
 
 jobs:
   generate-task:
-    if: contains(github.event.issue.labels.*.name, 'task-generation')
+    # Temporarily remove label condition to debug
+    # if: contains(github.event.issue.labels.*.name, 'task-generation')
     runs-on: ubuntu-latest
     
     steps:
@@ -15,7 +16,33 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Check if this is a task generation request
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.issue.title;
+            console.log('Issue title:', title);
+            
+            const isTaskRequest = title.startsWith('[NEW_TASK]');
+            console.log('Starts with [NEW_TASK]:', isTaskRequest);
+            
+            if (!isTaskRequest) {
+              console.log('⏭️ Skipping: Issue title does not start with [NEW_TASK]');
+              core.setOutput('skip', 'true');
+            } else {
+              console.log('✅ Proceeding: This is a task generation request');
+              core.setOutput('skip', 'false');
+            }
+            
+            return {
+              title: title,
+              isTaskRequest: isTaskRequest,
+              skip: !isTaskRequest
+            };
+
       - name: Test action trigger
+        if: steps.check.outputs.skip != 'true'
         run: |
           echo "✅ GitHub Action triggered successfully!"
           echo "Issue title: ${{ github.event.issue.title }}"
@@ -23,6 +50,7 @@ jobs:
           echo "Issue labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
 
       - name: Comment on issue with debug info
+        if: steps.check.outputs.skip != 'true'
         uses: actions/github-script@v7
         with:
           script: |
@@ -57,6 +85,7 @@ jobs:
             });
 
       - name: Add completion label
+        if: steps.check.outputs.skip != 'true'
         uses: actions/github-script@v7
         with:
           script: |
@@ -65,4 +94,35 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: ['action-tested']
+            });
+
+      - name: Comment on skipped issues
+        if: steps.check.outputs.skip == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `
+            ## ⏭️ GitHub Action Skipped
+            
+            This issue was skipped because the title doesn't start with \`[NEW_TASK]\`.
+            
+            **Issue Details:**
+            - **Title**: ${{ github.event.issue.title }}
+            
+            **To trigger task generation:**
+            1. Edit the issue title to start with \`[NEW_TASK]\`
+            2. Or create a new issue with title starting with \`[NEW_TASK]\`
+            3. Use the issue form template to provide all required information
+            
+            **Example title:** \`[NEW_TASK] Business Process Optimization Task\`
+            
+            ---
+            *This comment confirms the GitHub Action is working but skipped this issue.*
+            `;
+            
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
             });
