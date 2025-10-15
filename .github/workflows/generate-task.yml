@@ -2,7 +2,7 @@ name: Generate New Task from Template
 
 on:
   issues:
-    types: [opened]
+    types: [opened, reopened]
 
 jobs:
   generate-task:
