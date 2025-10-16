@@ -11,7 +11,7 @@ Required placeholders:
 - {{solution_goal}} - Primary goal or outcome of the solution
 - {{option1_title}} through {{option9_title}} - Titles for each of the 9 options
 - {{option1_desc}} through {{option9_desc}} - Descriptions for each of the 9 options
-- {{next_task_title}} - Title for the next task in navigation
+
 
 JavaScript Configuration:
 - Update correctAnswers Set in generatePersonalizedFeedback() to specify which options are correct
@@ -438,7 +438,7 @@ Note: The template maintains the original layout, styling, and functionality whi
                 feedbackHTML += '<div class="overall-feedback"><p><strong>Review needed.</strong> Consider which features are most critical for addressing the core user requirements.</p></div>';
             }
             
-            feedbackHTML += '<a href="../task-2-intent-matching/index.html" class="next-task">Continue to Task 2: {{next_task_title}}</a>';
+            feedbackHTML += '<a href="../task-2-intent-matching/index.html" class="next-task">Continue to Task 2</a>';
             
             document.getElementById('feedback').innerHTML = feedbackHTML;
         }

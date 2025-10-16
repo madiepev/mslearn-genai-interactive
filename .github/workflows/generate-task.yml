@@ -128,7 +128,6 @@ jobs:
             const companyName = extractField(issueBody, 'Company/Business Name') || 'Sample Company - Demo business for testing';
             const customerBase = extractField(issueBody, 'Customer Base') || 'Demo customers and users';
             const solutionGoal = extractField(issueBody, 'Solution Goal') || 'Demonstrate the task generation system';
-            const nextTaskTitle = extractField(issueBody, 'Next Task Title') || 'Next Task';
             
             // Extract all 9 options
             const options = {};
@@ -160,8 +159,7 @@ jobs:
               .replace(/\{\{company_name\}\}/g, companyName)
               .replace(/\{\{customer_base\}\}/g, customerBase)
               .replace(/\{\{solution_goal\}\}/g, solutionGoal)
-              .replace(/\{\{instructions\}\}/g, instructions)
-              .replace(/\{\{next_task_title\}\}/g, nextTaskTitle);
+              .replace(/\{\{instructions\}\}/g, instructions);
             
             // Replace all option placeholders with extracted data
             for (let i = 1; i <= 9; i++) {

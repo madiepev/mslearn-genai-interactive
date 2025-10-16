@@ -1,9 +1,27 @@
+<!--
+START PAGE TEMPLATE
+===================
+This is a reusable template for generating start/overview pages. Replace the following placeholders:
+
+Required placeholders:
+- {{page_title}} - The main page title (e.g., "Recipe Chatbot Evaluation Exercise")
+- {{scenario_title}} - The scenario heading (e.g., "Farm Business Recipe Chatbot")
+- {{scenario_context}} - Description of the business context and what they're trying to achieve
+- {{user_role}} - Description of the user's role in this scenario
+- {{learning_objectives}} - List of learning objectives (pipe-separated: "Objective 1|Objective 2|Objective 3")
+- {{task1_title}} through {{task5_title}} - Titles for each of the 5 tasks
+- {{task1_description}} through {{task5_description}} - Descriptions for each of the 5 tasks
+- {{task1_link}} through {{task5_link}} - Relative links to each task (e.g., "task-1-user-needs/index.html")
+- {{total_duration}} - Estimated total time (e.g., "25-30 minutes")
+
+Note: The template maintains the original layout, styling, and functionality while allowing content customization.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Chatbot Evaluation Exercise</title>
+    <title>{{page_title}}</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -98,24 +116,24 @@
 </head>
 <body>
     <div class="header">
-        <h1>Recipe Chatbot Evaluation Exercise</h1>
-        <p>Learn AI evaluation fundamentals through hands-on tasks</p>
+        <h1>{{page_title}}</h1>
+        <p>Apply decision-making skills through guided, scenario-based tasks</p>
     </div>
 
     <div class="scenario-overview">
-        <h2>Scenario: Farm Business Recipe Chatbot</h2>
-        <p><strong>Context:</strong> You're helping evaluate an AI chatbot for Munson's Pickles and Preserves Farm that assists customers with recipe recommendations, meal planning, and cooking guidance using farm products.</p>
+        <h2>{{scenario_title}}</h2>
+        <p><strong>Context:</strong> {{scenario_context}}</p>
         
-        <p><strong>Your Role:</strong> AI evaluation specialist responsible for ensuring the chatbot meets customer needs and business objectives.</p>
+        <p><strong>Your Role:</strong> {{user_role}}</p>
         
         <div style="margin-top: 20px;">
             <h3>Learning Objectives</h3>
             <ul style="text-align: left; margin: 15px 0;">
-                <li>Identify relevant user needs for AI systems</li>
-                <li>Evaluate response quality using systematic criteria</li>
-                <li>Select appropriate evaluation metrics for business contexts</li>
-                <li>Create comprehensive test sets for AI validation</li>
-                <li>Apply ACRUE framework for response assessment</li>
+                <li>{{learning_objective_1}}</li>
+                <li>{{learning_objective_2}}</li>
+                <li>{{learning_objective_3}}</li>
+                <li>{{learning_objective_4}}</li>
+                <li>{{learning_objective_5}}</li>
             </ul>
         </div>
     </div>
@@ -124,45 +142,45 @@
         <div class="task-card">
             <div class="task-number">1</div>
             <div class="task-content">
-                <div class="task-title">Identify User Needs</div>
-                <div class="task-description">Select the 3 most relevant user needs for a farm business recipe chatbot from a list of 9 options. Immediate feedback will confirm whether you picked correctly.</div>
-                <a href="task-1-user-needs/index.html" class="task-link">Start Task 1</a>
+                <div class="task-title">{{task1_title}}</div>
+                <div class="task-description">{{task1_description}}</div>
+                <a href="{{task1_link}}" class="task-link">Start Task 1</a>
             </div>
         </div>
 
         <div class="task-card">
             <div class="task-number">2</div>
             <div class="task-content">
-                <div class="task-title">Evaluate Response Quality</div>
-                <div class="task-description">Compare pairs of AI responses to customer queries and select the higher quality response that better satisfies each customer's need.</div>
-                <a href="task-2-intent-matching/index.html" class="task-link">Start Task 2</a>
+                <div class="task-title">{{task2_title}}</div>
+                <div class="task-description">{{task2_description}}</div>
+                <a href="{{task2_link}}" class="task-link">Start Task 2</a>
             </div>
         </div>
 
         <div class="task-card">
             <div class="task-number">3</div>
             <div class="task-content">
-                <div class="task-title">Select Evaluation Metrics</div>
-                <div class="task-description">From 6 available built-in evaluation metrics, select the 3 most relevant for this use case. View a sample evaluation dashboard after submitting.</div>
-                <a href="task-3-metrics-selection/index.html" class="task-link">Start Task 3</a>
+                <div class="task-title">{{task3_title}}</div>
+                <div class="task-description">{{task3_description}}</div>
+                <a href="{{task3_link}}" class="task-link">Start Task 3</a>
             </div>
         </div>
 
         <div class="task-card">
             <div class="task-number">4</div>
             <div class="task-content">
-                <div class="task-title">Create a Smoke Test Set</div>
-                <div class="task-description">Enter 9 diverse test prompts (3 per user intent) to serve as a smoke test for the chatbot. System will check coverage and provide feedback.</div>
-                <a href="task-4-test-creation/index.html" class="task-link">Start Task 4</a>
+                <div class="task-title">{{task4_title}}</div>
+                <div class="task-description">{{task4_description}}</div>
+                <a href="{{task4_link}}" class="task-link">Start Task 4</a>
             </div>
         </div>
 
         <div class="task-card">
             <div class="task-number">5</div>
             <div class="task-content">
-                <div class="task-title">Manual ACRUE Evaluation</div>
-                <div class="task-description">Using the 9 test prompts, rate responses against ACRUE dimensions (Accurate, Complete, Relevant, Useful, Exceptional) on a 1-5 scale.</div>
-                <a href="task-5-acrue-evaluation/index.html" class="task-link">Start Task 5</a>
+                <div class="task-title">{{task5_title}}</div>
+                <div class="task-description">{{task5_description}}</div>
+                <a href="{{task5_link}}" class="task-link">Start Task 5</a>
             </div>
         </div>
     </div>
@@ -170,7 +188,7 @@
     <div class="progress-info">
         <h3>Exercise Flow</h3>
         <p>Complete tasks in order for the best learning experience. Each task builds on knowledge from previous tasks and provides immediate feedback.</p>
-        <p><strong>Total Duration:</strong> 25-30 minutes | <strong>Format:</strong> Interactive exercises with instant feedback</p>
+        <p><strong>Total Duration:</strong> {{total_duration}} | <strong>Format:</strong> Interactive exercises with instant feedback</p>
     </div>
 </body>
 </html>
