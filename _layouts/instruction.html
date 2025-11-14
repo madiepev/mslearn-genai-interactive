@@ -111,12 +111,12 @@ body {
     {% endif %}
     
     {% if page.scenario.role %}
-    <p><strong>Your Role:</strong> {{ page.scenario.role }}</p>
+    <p><strong>Your role:</strong> {{ page.scenario.role }}</p>
     {% endif %}
     
     {% if page.learning_objectives %}
     <div class="learning-objectives" style="margin-top: 20px;">
-        <h3>Learning Objectives</h3>
+        <h3>Learning objectives</h3>
         <ul>
         {% for objective in page.learning_objectives %}
             <li>{{ objective }}</li>
@@ -135,7 +135,7 @@ body {
         <div class="task-content">
             <div class="task-title">{{ task.title }}</div>
             <div class="task-description">{{ task.description }}</div>
-            <a href="{{ task.link }}" class="task-link">{{ task.button_text | default: "Start Task " | append: task.number }}</a>
+            <a href="{{ task.link }}" class="task-link">{{ task.button_text | default: "Start task " | append: task.number }}</a>
         </div>
     </div>
     {% endfor %}
@@ -147,11 +147,11 @@ body {
 
 {% if page.exercise_info %}
 <div class="progress-info">
-    <h3>{{ page.exercise_info.title | default: "Exercise Flow" }}</h3>
+    <h3>{{ page.exercise_info.title | default: "Exercise flow" }}</h3>
     <p>{{ page.exercise_info.description | default: "Complete tasks in order for the best learning experience." }}</p>
     {% if page.exercise_info.duration or page.exercise_info.format %}
     <p>
-        {% if page.exercise_info.duration %}<strong>Total Duration:</strong> {{ page.exercise_info.duration }}{% endif %}
+        {% if page.exercise_info.duration %}<strong>Total duration:</strong> {{ page.exercise_info.duration }}{% endif %}
         {% if page.exercise_info.duration and page.exercise_info.format %} | {% endif %}
         {% if page.exercise_info.format %}<strong>Format:</strong> {{ page.exercise_info.format }}{% endif %}
     </p>
