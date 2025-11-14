@@ -19,23 +19,23 @@ tasks:
   - number: 1
     title: "Identify user needs"
     description: "Select the 3 most relevant user needs for a farm business recipe chatbot from a list of 9 options. Immediate feedback will confirm whether you picked correctly."
-    link: "../Labs/recipe-chatbot-mockups/task-1-user-needs/index.html"
+    link: "../Labs/recipe-chatbot-mockups/task-1.html"
   - number: 2
     title: "Evaluate response quality"
     description: "Compare pairs of AI responses to customer queries and select the higher quality response that better satisfies each customer's need."
-    link: "../Labs/recipe-chatbot-mockups/task-2-intent-matching/index.html"
+    link: "../Labs/recipe-chatbot-mockups/task-2.html"
   - number: 3
     title: "Select evaluation metrics"
     description: "From 6 available built-in evaluation metrics, select the 3 most relevant for this use case. View a sample evaluation dashboard after submitting."
-    link: "../Labs/recipe-chatbot-mockups/task-3-metrics-selection/index.html"
+    link: "../Labs/recipe-chatbot-mockups/task-3.html"
   - number: 4
     title: "Create a smoke test set"
     description: "Enter 9 diverse test prompts (3 per user intent) to serve as a smoke test for the chatbot. System will check coverage and provide feedback."
-    link: "../Labs/recipe-chatbot-mockups/task-4-test-creation/index.html"
+    link: "../Labs/recipe-chatbot-mockups/task-4.html"
   - number: 5
     title: "Manual ACRUE evaluation"
     description: "Using the 9 test prompts, rate responses against ACRUE dimensions (Accurate, Complete, Relevant, Useful, Exceptional) on a 1-5 scale."
-    link: "../Labs/recipe-chatbot-mockups/task-5-acrue-evaluation/index.html"
+    link: "../Labs/recipe-chatbot-mockups/task-5.html"
 exercise_info:
   title: "Exercise flow"
   description: "Complete tasks in order for the best learning experience. Each task builds on knowledge from previous tasks and provides immediate feedback."

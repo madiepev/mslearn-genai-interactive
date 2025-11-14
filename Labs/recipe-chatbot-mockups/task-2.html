@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task 2: Evaluate Response Quality - Recipe Chatbot</title>
+    <title>Task 2: Evaluate response quality - Recipe Chatbot</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -34,6 +34,13 @@
             border-bottom: 1px solid #e0e0e0;
             margin-bottom: 30px;
             padding-bottom: 20px;
+        }
+        .task-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
         }
         .intent-section {
             background: #fff;
@@ -216,14 +223,21 @@
 </head>
 <body>
     <div class="navigation">
-        <a href="../task-1-user-needs/index.html" class="nav-link">← Task 1: User Needs</a>
+        <a href="task-1.html" class="nav-link">← Task 1: Identify user needs</a>
         <span>Task 2 of 5</span>
-        <a href="../task-3-metrics-selection/index.html" class="nav-link">Next: Task 3 →</a>
+        <a href="task-3.html" class="nav-link">Next: Task 3 →</a>
     </div>
 
     <div class="header">
-        <h1>Task 2: Evaluate Response Quality</h1>
+        <h1>Task 2: Evaluate response quality</h1>
         <p>For each customer query below, compare two AI responses and select the one that better satisfies the customer's need.</p>
+    </div>
+
+    <div class="task-info">
+        <h3>Scenario Context</h3>
+        <p><strong>Farm Business:</strong> Munson's Pickles and Preserves Farm - a family farm specializing in artisanal pickles, preserves, and farm-fresh produce</p>
+        <p><strong>Customer Base:</strong> Busy families, health-conscious shoppers, and cooking enthusiasts</p>
+        <p><strong>Chatbot Goal:</strong> Help customers discover recipes, plan meals, and make informed food choices</p>
     </div>
 
     <!-- Customer Query 1: Recipe Search -->
@@ -312,7 +326,7 @@
 
         <p><strong>Key Pattern:</strong> The best responses are specific, actionable, and directly address the customer's exact situation rather than providing generic suggestions.</p>
         
-        <a href="../task-3-metrics-selection/index.html" class="next-task">Continue to Task 3: Select Evaluation Metrics</a>
+        <a href="task-3.html" class="next-task">Continue to Task 3: Select evaluation metrics</a>
     </div>
 
     <div class="reset-section">
@@ -416,7 +430,7 @@
                 feedbackHTML += '<div class="overall-feedback needs-work"><p><strong>Keep practicing!</strong> Focus on responses that are specific, actionable, and directly address the customer\'s exact situation rather than providing generic suggestions.</p></div>';
             }
             
-            feedbackHTML += '<a href="../task-3-metrics-selection/index.html" class="next-task">Continue to Task 3: Select Evaluation Metrics</a>';
+            feedbackHTML += '<a href="task-3.html" class="next-task">Continue to Task 3: Select evaluation metrics</a>';
             
             document.getElementById('feedback').innerHTML = feedbackHTML;
         }

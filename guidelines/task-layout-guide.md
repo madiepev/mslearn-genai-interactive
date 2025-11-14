@@ -6,7 +6,7 @@ This document explains how to use the new task layout system that provides consi
 
 The task layout system consists of:
 - **Shared Layout**: `_layouts/task.html` - provides consistent navigation, header, and footer
-- **Custom Content**: Individual task markdown files with YAML front matter for configuration
+- **Simple Task Files**: `task-1.md`, `task-2.md`, etc. in the main folder
 - **Flexible Styling**: Task-specific CSS and JavaScript injected via front matter
 
 ## Layout Structure
@@ -29,16 +29,17 @@ The task layout system consists of:
 
 ### 1. Basic Task File Structure
 
-Create a new markdown file (e.g., `task-X-name/index.md`) with this structure:
+Create a new markdown file (e.g., `task-6.md`) with this structure:
 
 ```yaml
 ---
 layout: task
-title: "Task X: Your Task Title"
+title: "Task 6: Your Task Title"
 description: "Brief description of what the user should do"
-task_progress: "Task X of Y"
-next_link: "../task-Y/index.html"
-next_text: "Next: Task Y →"
+task_progress: "Task 6 of Y"
+next_link: "task-7.html"
+next_text: "Next: Task 7 →"
+permalink: /Labs/recipe-chatbot-mockups/task-6.html
 # ... additional configuration
 ---
 
@@ -60,9 +61,10 @@ description: "Task description" # Subtitle/instructions
 #### Navigation Configuration
 ```yaml
 task_progress: "Task 1 of 5"           # Progress indicator
-back_link: "../previous-task/"         # Previous task link (optional)
-next_link: "../next-task/"             # Next task link (optional)  
-next_text: "Next: Task Name →"         # Custom next button text (optional)
+back_link: "task-0.html"               # Previous task link (optional)
+next_link: "task-2.html"               # Next task link (optional)  
+next_text: "Next: Task 2 →"            # Custom next button text (optional)
+permalink: /Labs/recipe-chatbot-mockups/task-1.html  # URL permalink
 ```
 
 #### Task Info Panel (Optional)
@@ -255,14 +257,18 @@ To convert an existing HTML task file:
 
 ```
 Labs/recipe-chatbot-mockups/
-├── task-1-user-needs/
-│   ├── index.md          ← New layout-based version
-│   └── index.html        ← Original (can be removed)
-├── task-2-intent-matching/
-│   ├── index.md          ← New layout-based version
-│   └── index.html        ← Original (can be removed)
-└── _layouts/
-    └── task.html         ← Shared layout
+├── task-1.md             ← Task files at root level
+├── task-2.md
+├── task-3.md
+├── task-4.md
+├── task-5.md
+└── (old structure can be removed)
+    ├── task-1-user-needs/
+    ├── task-2-intent-matching/
+    └── ...
+
+_layouts/
+└── task.html             ← Shared layout
 ```
 
-This system provides maximum flexibility while ensuring consistency across all tasks.
+This system provides maximum flexibility while ensuring consistency across all tasks. The simplified file structure makes it much easier to manage and add new tasks.

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task 3: Select Evaluation Metrics - Recipe Chatbot</title>
+    <title>Task 3: Select evaluation metrics - Recipe Chatbot</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -34,6 +34,13 @@
             border-bottom: 1px solid #e0e0e0;
             margin-bottom: 30px;
             padding-bottom: 20px;
+        }
+        .task-info {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
         }
         .context-box {
             background: #f6f8fa;
@@ -277,14 +284,21 @@
 </head>
 <body>
     <div class="navigation">
-        <a href="../task-2-intent-matching/index.html" class="nav-link">← Task 2: Intent Matching</a>
+        <a href="task-2.html" class="nav-link">← Task 2: Evaluate response quality</a>
         <span>Task 3 of 5</span>
-        <a href="../task-4-test-creation/index.html" class="nav-link">Next: Task 4 →</a>
+        <a href="task-4.html" class="nav-link">Next: Task 4 →</a>
     </div>
 
     <div class="header">
-        <h1>Task 3: Select Evaluation Metrics</h1>
+        <h1>Task 3: Select evaluation metrics</h1>
         <p>Choose 3 Azure AI Foundry evaluation metrics that are most relevant for evaluating the recipe chatbot's performance.</p>
+    </div>
+
+    <div class="task-info">
+        <h3>Scenario Context</h3>
+        <p><strong>Farm Business:</strong> Munson's Pickles and Preserves Farm - a family farm specializing in artisanal pickles, preserves, and farm-fresh produce</p>
+        <p><strong>Customer Base:</strong> Busy families, health-conscious shoppers, and cooking enthusiasts</p>
+        <p><strong>Chatbot Goal:</strong> Help customers discover recipes, plan meals, and make informed food choices</p>
     </div>
 
     <div class="context-box">
@@ -453,7 +467,7 @@
             <li><strong>Self-harm Related Content</strong> maintains safe dietary and cooking advice, especially important for health-related food guidance</li>
         </ul>
         
-        <a href="../task-4-test-creation/index.html" class="next-task">Continue to Task 4: Create Smoke Test Set</a>
+        <a href="task-4.html" class="next-task">Continue to Task 4: Create a smoke test set</a>
     </div>
 
     <div class="reset-section">
@@ -637,7 +651,7 @@
                 </div>
             `;
             
-            feedbackHTML += '<a href="../task-4-test-creation/index.html" class="next-task">Continue to Task 4: Create Smoke Test Set</a>';
+            feedbackHTML += '<a href="task-4.html" class="next-task">Continue to Task 4: Create a smoke test set</a>';
             
             document.getElementById('feedback').innerHTML = feedbackHTML;
         }
