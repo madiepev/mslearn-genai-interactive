@@ -1,24 +1,3 @@
-<!--
-TASK 1 TEMPLATE
-===============
-This is a reusable template for generating Task 1 pages. Replace the following placeholders:
-
-Required placeholders:
-- {{task_title}} - The specific task title (e.g., "Identify User Needs")
-- {{instructions}} - Task instructions (e.g., "Select the 3 most relevant options from the 9 choices below that best address the task requirements. Submit your selection to receive immediate feedback.")
-- {{company_name}} - Company/business name and description
-- {{customer_base}} - Target audience description
-- {{solution_goal}} - Primary goal or outcome of the solution
-- {{option1_title}} through {{option9_title}} - Titles for each of the 9 options
-- {{option1_desc}} through {{option9_desc}} - Descriptions for each of the 9 options
-
-
-JavaScript Configuration:
-- Update correctAnswers Set in generatePersonalizedFeedback() to specify which options are correct
-- Update explanation text in the explanations objects for correct/incorrect/missed feedback
-
-Note: The template maintains the original layout, styling, and functionality while allowing content customization.
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -69,7 +48,7 @@ Note: The template maintains the original layout, styling, and functionality whi
             padding: 15px;
             margin: 15px 0;
         }idth, initial-scale=1.0">
-    <title>Task 1: {{task_title}}</title>
+    <title>Task 1: Identify User Needs - Recipe Chatbot</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -221,73 +200,73 @@ Note: The template maintains the original layout, styling, and functionality whi
 </head>
 <body>
     <div class="navigation">
-        <a href="../index.html" class="nav-link">← Back to Overview</a>
+        <a href="../../../Instructions/recipe-chatbot-index.html" class="nav-link">← Back to Overview</a>
         <span>Task 1 of 5</span>
         <a href="../task-2-intent-matching/index.html" class="nav-link">Next: Task 2 →</a>
     </div>
 
     <div class="header">
-        <h1>Task 1: {{task_title}}</h1>
-        <p>{{instructions}}</p>
+        <h1>Task 1: Identify User Needs</h1>
+        <p>Select the 3 most relevant user needs for a farm business recipe chatbot from the 9 options below.</p>
     </div>
 
     <div class="task-info">
         <h3>Scenario Context</h3>
-        <p><strong>Company/Business:</strong> {{company_name}}</p>
-        <p><strong>Customer Base:</strong> {{customer_base}}</p>
-        <p><strong>Solution Goal:</strong> {{solution_goal}}</p>
+        <p><strong>Farm Business:</strong> Munson's Pickles and Preserves Farm - a family farm specializing in artisanal pickles, preserves, and farm-fresh produce</p>
+        <p><strong>Customer Base:</strong> Busy families, health-conscious shoppers, and cooking enthusiasts</p>
+        <p><strong>Chatbot Goal:</strong> Help customers discover recipes, plan meals, and make informed food choices</p>
     </div>
 
     <div class="needs-grid">
-        <div class="need-card" data-need="option1" onclick="toggleNeed('option1')">
-            <div class="need-title">{{option1_title}}</div>
-            <div class="need-description">{{option1_desc}}</div>
+        <div class="need-card" data-need="recipe-search" onclick="toggleNeed('recipe-search')">
+            <div class="need-title">Recipe Search & Discovery</div>
+            <div class="need-description">Find recipes based on ingredients, dietary preferences, or cooking time constraints</div>
         </div>
 
-        <div class="need-card" data-need="option2" onclick="toggleNeed('option2')">
-            <div class="need-title">{{option2_title}}</div>
-            <div class="need-description">{{option2_desc}}</div>
+        <div class="need-card" data-need="price-comparison" onclick="toggleNeed('price-comparison')">
+            <div class="need-title">Price Comparison</div>
+            <div class="need-description">Compare prices of similar products across different brands and sizes</div>
         </div>
 
-        <div class="need-card" data-need="option3" onclick="toggleNeed('option3')">
-            <div class="need-title">{{option3_title}}</div>
-            <div class="need-description">{{option3_desc}}</div>
+        <div class="need-card" data-need="nutritional-info" onclick="toggleNeed('nutritional-info')">
+            <div class="need-title">Nutritional Information</div>
+            <div class="need-description">Get detailed nutrition facts, allergen information, and health benefits of ingredients</div>
         </div>
 
-        <div class="need-card" data-need="option4" onclick="toggleNeed('option4')">
-            <div class="need-title">{{option4_title}}</div>
-            <div class="need-description">{{option4_desc}}</div>
+        <div class="need-card" data-need="store-navigation" onclick="toggleNeed('store-navigation')">
+            <div class="need-title">Store Navigation</div>
+            <div class="need-description">Find product locations and get directions within the physical store</div>
         </div>
 
-        <div class="need-card" data-need="option5" onclick="toggleNeed('option5')">
-            <div class="need-title">{{option5_title}}</div>
-            <div class="need-description">{{option5_desc}}</div>
+        <div class="need-card" data-need="meal-planning" onclick="toggleNeed('meal-planning')">
+            <div class="need-title">Meal Planning</div>
+            <div class="need-description">Plan weekly meals, create shopping lists, and organize family dining schedules</div>
         </div>
 
-        <div class="need-card" data-need="option6" onclick="toggleNeed('option6')">
-            <div class="need-title">{{option6_title}}</div>
-            <div class="need-description">{{option6_desc}}</div>
+        <div class="need-card" data-need="cooking-tips" onclick="toggleNeed('cooking-tips')">
+            <div class="need-title">Cooking Tips & Techniques</div>
+            <div class="need-description">Learn cooking methods, ingredient substitutions, and kitchen tips for better results</div>
         </div>
 
-        <div class="need-card" data-need="option7" onclick="toggleNeed('option7')">
-            <div class="need-title">{{option7_title}}</div>
-            <div class="need-description">{{option7_desc}}</div>
+        <div class="need-card" data-need="inventory-management" onclick="toggleNeed('inventory-management')">
+            <div class="need-title">Inventory Management</div>
+            <div class="need-description">Track home pantry items, expiration dates, and suggest recipes based on what you have</div>
         </div>
 
-        <div class="need-card" data-need="option8" onclick="toggleNeed('option8')">
-            <div class="need-title">{{option8_title}}</div>
-            <div class="need-description">{{option8_desc}}</div>
+        <div class="need-card" data-need="delivery-tracking" onclick="toggleNeed('delivery-tracking')">
+            <div class="need-title">Delivery Tracking</div>
+            <div class="need-description">Monitor order status, delivery times, and manage pickup/delivery preferences</div>
         </div>
 
-        <div class="need-card" data-need="option9" onclick="toggleNeed('option9')">
-            <div class="need-title">{{option9_title}}</div>
-            <div class="need-description">{{option9_desc}}</div>
+        <div class="need-card" data-need="seasonal-suggestions" onclick="toggleNeed('seasonal-suggestions')">
+            <div class="need-title">Seasonal Suggestions</div>
+            <div class="need-description">Discover seasonal produce, holiday recipes, and timely cooking recommendations</div>
         </div>
     </div>
 
     <div class="selection-summary">
         <div class="selected-count" id="selectedCount">0 of 3 needs selected</div>
-        <p>Choose exactly 3 options that best address the scenario requirements</p>
+        <p>Choose exactly 3 user needs that are most relevant for a recipe-focused chatbot</p>
         <button class="submit-btn" id="submitBtn" onclick="submitSelection()" disabled>Submit Selection</button>
     </div>
 
@@ -311,7 +290,7 @@ Note: The template maintains the original layout, styling, and functionality whi
         
         <p><strong>Other needs:</strong> While important for a full farm business app, they're less critical for a recipe-focused chatbot experience.</p>
         
-        <a href="../task-2-intent-matching/index.html" class="next-task">Continue to Task 2: Match Intents to Responses</a>
+        <a href="../../../Instructions/recipe-chatbot-index.html" class="next-task">Continue to Task 2: Match Intents to Responses</a>
     </div>
 
     <div class="reset-section">
@@ -358,22 +337,22 @@ Note: The template maintains the original layout, styling, and functionality whi
         }
 
         function generatePersonalizedFeedback() {
-            const correctAnswers = new Set(['option1', 'option5', 'option6']); // Update these IDs based on correct answers
+            const correctAnswers = new Set(['recipe-search', 'meal-planning', 'cooking-tips']);
             const selectedArray = Array.from(selectedNeeds);
             const correctSelections = selectedArray.filter(need => correctAnswers.has(need));
             const incorrectSelections = selectedArray.filter(need => !correctAnswers.has(need));
             const missedCorrect = Array.from(correctAnswers).filter(need => !selectedNeeds.has(need));
             
             const needTitles = {
-                'option1': '{{option1_title}}',
-                'option2': '{{option2_title}}',
-                'option3': '{{option3_title}}',
-                'option4': '{{option4_title}}',
-                'option5': '{{option5_title}}',
-                'option6': '{{option6_title}}',
-                'option7': '{{option7_title}}',
-                'option8': '{{option8_title}}',
-                'option9': '{{option9_title}}'
+                'recipe-search': 'Recipe Search & Discovery',
+                'meal-planning': 'Meal Planning',
+                'cooking-tips': 'Cooking Tips & Techniques',
+                'price-comparison': 'Price Comparison',
+                'nutritional-info': 'Nutritional Information',
+                'store-navigation': 'Store Navigation',
+                'inventory-management': 'Inventory Management',
+                'delivery-tracking': 'Delivery Tracking',
+                'seasonal-suggestions': 'Seasonal Suggestions'
             };
 
             let feedbackHTML = '<h3>Your Selection Feedback</h3>';
@@ -387,9 +366,9 @@ Note: The template maintains the original layout, styling, and functionality whi
                 feedbackHTML += '<div class="correct-section"><h4>Correct Selections:</h4><ul>';
                 correctSelections.forEach(need => {
                     const explanations = {
-                        'option1': 'Explanation for why option 1 is correct',
-                        'option5': 'Explanation for why option 5 is correct',
-                        'option6': 'Explanation for why option 6 is correct'
+                        'recipe-search': 'Core functionality - customers expect to find recipes easily',
+                        'meal-planning': 'Helps busy families organize meals and shopping efficiently',
+                        'cooking-tips': 'Essential support for successful recipe execution'
                     };
                     feedbackHTML += `<li><strong>${needTitles[need]}</strong> - ${explanations[need]}</li>`;
                 });
@@ -401,12 +380,12 @@ Note: The template maintains the original layout, styling, and functionality whi
                 feedbackHTML += '<div class="incorrect-section"><h4>Incorrect Selections:</h4><ul>';
                 incorrectSelections.forEach(need => {
                     const explanations = {
-                        'option2': 'Explanation for why option 2 is incorrect',
-                        'option3': 'Explanation for why option 3 is incorrect',
-                        'option4': 'Explanation for why option 4 is incorrect',
-                        'option7': 'Explanation for why option 7 is incorrect',
-                        'option8': 'Explanation for why option 8 is incorrect',
-                        'option9': 'Explanation for why option 9 is incorrect'
+                        'price-comparison': 'Not core to recipe functionality - belongs in e-commerce features',
+                        'nutritional-info': 'While useful, not essential for basic recipe assistance',
+                        'store-navigation': 'Physical store feature - less relevant for recipe chatbot',
+                        'inventory-management': 'Advanced feature - not essential for initial recipe chatbot',
+                        'delivery-tracking': 'Logistics feature - separate from recipe assistance',
+                        'seasonal-suggestions': 'Nice-to-have but not core to recipe search and planning'
                     };
                     feedbackHTML += `<li><strong>${needTitles[need]}</strong> - ${explanations[need]}</li>`;
                 });
@@ -418,9 +397,9 @@ Note: The template maintains the original layout, styling, and functionality whi
                 feedbackHTML += '<div class="missed-section"><h4>You Missed:</h4><ul>';
                 missedCorrect.forEach(need => {
                     const explanations = {
-                        'option1': 'Explanation for why this was an important option to select',
-                        'option5': 'Explanation for why this was an important option to select',
-                        'option6': 'Explanation for why this was an important option to select'
+                        'recipe-search': 'Essential core functionality for any recipe chatbot',
+                        'meal-planning': 'Critical for helping families organize their weekly cooking',
+                        'cooking-tips': 'Vital for helping users succeed with recipes they find'
                     };
                     feedbackHTML += `<li><strong>${needTitles[need]}</strong> - ${explanations[need]}</li>`;
                 });
@@ -429,16 +408,16 @@ Note: The template maintains the original layout, styling, and functionality whi
             
             // Overall feedback
             if (score === 3) {
-                feedbackHTML += '<div class="overall-feedback"><p><strong>Excellent!</strong> You identified all the core requirements. These three selections form the foundation of the solution.</p></div>';
+                feedbackHTML += '<div class="overall-feedback"><p><strong>Excellent!</strong> You identified all the core needs for a recipe chatbot. These three needs form the foundation of effective recipe assistance.</p></div>';
             } else if (score === 2) {
-                feedbackHTML += '<div class="overall-feedback"><p><strong>Good work!</strong> You got most of the core requirements. Review the missed selections to understand the complete solution approach.</p></div>';
+                feedbackHTML += '<div class="overall-feedback"><p><strong>Good work!</strong> You got most of the core needs. Focus on features that directly support recipe discovery, planning, and execution.</p></div>';
             } else if (score === 1) {
-                feedbackHTML += '<div class="overall-feedback"><p><strong>Keep learning!</strong> Focus on the most essential features that directly address the primary user needs.</p></div>';
+                feedbackHTML += '<div class="overall-feedback"><p><strong>Keep learning!</strong> Think about what customers primarily need when looking for recipe help: finding recipes, planning meals, and cooking successfully.</p></div>';
             } else {
-                feedbackHTML += '<div class="overall-feedback"><p><strong>Review needed.</strong> Consider which features are most critical for addressing the core user requirements.</p></div>';
+                feedbackHTML += '<div class="overall-feedback"><p><strong>Review needed.</strong> For a recipe chatbot, focus on the core recipe lifecycle: discovery, planning, and execution support.</p></div>';
             }
             
-            feedbackHTML += '<a href="../task-2-intent-matching/index.html" class="next-task">Continue to Task 2</a>';
+            feedbackHTML += '<a href="../task-2-intent-matching/index.html" class="next-task">Continue to Task 2: Evaluate Response Quality</a>';
             
             document.getElementById('feedback').innerHTML = feedbackHTML;
         }
