@@ -1,12 +1,12 @@
 ---
 layout: instruction
 lab:
-  title: Example New Exercise
+  title: Example new exercise
   type: Interactive Lab
   description: A template showing how to create new instruction pages
 permalink: /Instructions/example-new-exercise.html
 scenario:
-  title: "Scenario: Your Business Context Here"
+  title: "Scenario: Your business context here"
   context: "Describe the business scenario and problem context here."
   role: "Define the learner's role in this scenario."
 learning_objectives:
@@ -15,15 +15,15 @@ learning_objectives:
   - "Third learning objective"
 tasks:
   - number: 1
-    title: "Task 1 Title"
+    title: "Task 1 title"
     description: "Brief description of what the learner will do in this task."
     link: "../Labs/your-lab-folder/task-1/index.html"
   - number: 2
-    title: "Task 2 Title"
+    title: "Task 2 title"
     description: "Brief description of what the learner will do in this task."
     link: "../Labs/your-lab-folder/task-2/index.html"
 exercise_info:
-  title: "Exercise Information"
+  title: "Exercise information"
   description: "Any additional instructions or flow information."
   duration: "15-20 minutes"
   format: "Interactive exercises"
@@ -32,7 +32,7 @@ exercise_info:
 <!-- Any additional custom content can go here -->
 <!-- This will appear between the tasks and the exercise info -->
 
-## Additional Instructions
+## Additional instructions
 
 You can add any custom markdown content here that doesn't fit into the structured format above. This could include:
 
